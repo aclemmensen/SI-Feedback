@@ -1,0 +1,57 @@
+#szfb_container {
+	position:absolute;
+	right:10px;
+	bottom:0;
+	width:250px;
+	font-size:13px;
+	font-family:Arial;
+}
+
+#szfb_tabbar {
+	background:#ccc;
+	float:right;
+	padding:4px 8px;
+	border-radius:3px 3px 0 0;
+}
+
+#szfb_toggle {
+	text-decoration:none;
+	font-weight:bold;
+	font-size:90%;
+}
+
+#szfb_content {
+	clear:right;
+	background:#ccc;
+	border-radius:3px 0 0 0;
+	min-height:8px;
+}
+
+#szfb_inner {
+	padding:5px;
+}
+
+#szfb_question {
+	font-weight:bold;
+	margin:5px 0 10px 0;
+}
+
+#szfb_comment {
+	width:230px;
+	height:50px;
+	font-family:Arial;
+}
+
+#szfb_form {
+	text-align:center;
+}
+
+#szfb_submit {
+	background:#aaa;
+	padding:5px 8px;
+	border:none;
+	color:#666;
+	font-weight:bold;
+	border-radius:5px;
+	cursor:pointer;
+}

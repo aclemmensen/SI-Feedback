@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Test feedback-script</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="feedback.css" />
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="feedback.js"></script>
+	</head>
+	<body>
+
+		<div id="szfb_container">
+			<div id="szfb_tabbar">
+				<a id="szfb_toggle" href="#">Hvad synes du om Julen? +</a>
+			</div>
+			<div id="szfb_content">
+				<div id="szfb_inner" style="display:none;">
+					<form id="szfb_form" method="post" action="submit.php">
+						<p id="szfb_question">Bevarede siden dit spg?</p>
+						<div id="szfb_response"></div>
+						<textarea id="szfb_comment"></textarea>
+						<div id="szfb_formaction">
+							<input type="submit" id="szfb_submit" value="Send feedback" name="commit" />
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+	</body>
+</html>
