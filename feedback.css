@@ -34,12 +34,20 @@
 #szfb_question {
 	font-weight:bold;
 	margin:5px 0 10px 0;
+	font-size:100%;
 }
 
 #szfb_comment {
 	width:230px;
 	height:50px;
+	font-size:90%;
 	font-family:Arial;
+	background-color:#ccc;
+}
+
+#szfb_thanks {
+	text-align:center;
+	font-weight:bold;
 }
 
 #szfb_form {
@@ -50,8 +58,9 @@
 	background:#aaa;
 	padding:5px 8px;
 	border:none;
-	color:#666;
+	color:black;
 	font-weight:bold;
 	border-radius:5px;
 	cursor:pointer;
+	font-size:100%;
 }

@@ -13,7 +13,7 @@ var _sz_fb_config = {};
 
 	var defaults = {
 		layout: {
-			corners: '5',
+			corners: 8,
 			comment: true,
 			commentRequired: false,
 			position: 'E',
@@ -23,17 +23,17 @@ var _sz_fb_config = {};
 				style: 'red'
 			},
 			font: {
-				name: 'Verdana',
-				size: '11'
+				name: 'Arial',
+				size: '12'
 			},
 			colors: {
-				background: '#666',
+				background: '#ca0000',
 				text: '#ffffff',
 				error: '#ca0000'
 			}
 		},
 		texts: {
-			title: "Hvad synes du om denne side?",
+			title: "Feedback",
 			question: "Hvad synes du?",
 			button: "Send feedback",
 			hide: "Skjul",
@@ -66,14 +66,18 @@ var _sz_fb_config = {};
 
 	$(function() {
 
-		var eContainer = $('#szfb_container');
-		var eToggle    = $('#szfb_toggle');
-		var eThanks    = $('#szfb_thanks');
-		var eQuestion  = $('#szfb_question');
-		var eInner     = $('#szfb_inner');
-		var eForm      = $('#szfb_form');
-		var eComment   = $('#szfb_comment');
-		var eSubmit    = $('#szfb_submit');
+		var elements = {
+			container : $('#szfb_container'),
+			tabbar    : $('#szfb_tabbar'),
+			toggle    : $('#szfb_toggle'),
+			content   : $('#szfb_content'),
+			inner     : $('#szfb_inner'),
+			thanks    : $('#szfb_thanks'),
+			question  : $('#szfb_question'),
+			form      : $('#szfb_form'),
+			comment   : $('#szfb_comment'),
+			submit    : $('#szfb_submit')
+		};
 
 		var state = new function() {
 			var state = '';
@@ -92,19 +96,39 @@ var _sz_fb_config = {};
 			this.get = function() { return self.state; }
 
 			this.init = function() {
-				eQuestion.text(opts.texts.question);
-				eThanks.text(opts.texts.confirmation);
+				elements.container.css({ 'font-family': opts.layout.font.name, 'font-size': opts.layout.font.size + 'px'});
+
+				if(opts.layout.corners > 0) {
+					elements.content.css({ 'border-radius': opts.layout.corners + 'px 0 0 0'});
+					elements.tabbar.css({ 'border-radius': opts.layout.corners + 'px ' + opts.layout.corners + 'px 0 0'});
+				}
+
+				if(opts.layout.comment) {
+					elements.comment.css({'border-color': opts.layout.colors.text}).show();
+				}
+
+				$([elements.tabbar, elements.content]).each(function() {
+					this.css({'background-color': opts.layout.colors.background});
+				});
+
+				$([elements.toggle, elements.question, elements.thanks]).each(function() {
+					this.css({color: opts.layout.colors.text});
+				});
+
+				elements.question.text(opts.texts.question);
+				elements.thanks.text(opts.texts.confirmation);
+
 				self.set('closed');
 			}
 
 			this.closed = function() { 
-				eInner.hide();
-				eToggle.text(opts.texts.title);
+				elements.inner.hide();
+				elements.toggle.text(opts.texts.title);
 			}
 
 			this.open = function() {
-				eInner.show();
-				eToggle.text(opts.texts.close);
+				elements.inner.show();
+				elements.toggle.text(opts.texts.close);
 			}
 
 			this.invalid = function() {
@@ -112,22 +136,22 @@ var _sz_fb_config = {};
 			}
 
 			this.complete = function() {
-				eForm.hide();
-				eToggle.text(opts.texts.hide);
-				eThanks.show();
+				elements.form.hide();
+				elements.toggle.text(opts.texts.hide);
+				elements.thanks.show();
 			}
 
 			this.hide = function() {
-				eComment.val('');
-				eForm.show();
-				eThanks.hide();
+				elements.comment.val('');
+				elements.form.show();
+				elements.thanks.hide();
 				self.closed();
 			}
 		};
 
 		// Changes state in this fashion: 
 		// Closed -> Open -> Complete -> Hide -> Open ...
-		eToggle.click(function() {
+		elements.toggle.click(function() {
 			switch(state.get()) {
 			case 'closed':
 				state.set('open');
@@ -150,10 +174,11 @@ var _sz_fb_config = {};
 			return false;
 		}
 
-		eForm.submit(handlesubmit);
-		eSubmit.click(handlesubmit);
+		elements.form.submit(handlesubmit);
+		elements.submit.click(handlesubmit);
 
 		state.set('init');
+		state.set('open');
 
 	});
 
