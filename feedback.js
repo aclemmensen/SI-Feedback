@@ -66,52 +66,95 @@ var _sz_fb_config = {};
 
 	$(function() {
 
-		var eToggle = $('#szfb_toggle');
-		var eSubmit = $('#szfb_submit');
+		var eContainer = $('#szfb_container');
+		var eToggle    = $('#szfb_toggle');
+		var eThanks    = $('#szfb_thanks');
+		var eQuestion  = $('#szfb_question');
+		var eInner     = $('#szfb_inner');
+		var eForm      = $('#szfb_form');
+		var eComment   = $('#szfb_comment');
+		var eSubmit    = $('#szfb_submit');
 
-		var state = 'closed';
-		var states = {
-			closed: function() { 
-				$('#szfb_inner').hide();
+		var state = new function() {
+			var state = '';
+			var self = this;
+
+			this.set = function(to) {
+				self.state = to;
+				console.log('Setting state %s', to);
+				if(self[to] !== undefined) {
+					self[to].call();
+				} else {
+					console.log('No state %s', to);
+				}
+			}
+
+			this.get = function() { return self.state; }
+
+			this.init = function() {
+				eQuestion.text(opts.texts.question);
+				eThanks.text(opts.texts.confirmation);
+				self.set('closed');
+			}
+
+			this.closed = function() { 
+				eInner.hide();
 				eToggle.text(opts.texts.title);
-				states.change('closed');
-			},
-			open: function() {
-				$('#szfb_inner').show();
+			}
+
+			this.open = function() {
+				eInner.show();
 				eToggle.text(opts.texts.close);
-				states.change('open');
-			},
-			complete: function() {
-				states.change('complete');
-			},
-			change: function(to) {
-				state = to;
-				console.log('setting state %s', state);
+			}
+
+			this.invalid = function() {
+
+			}
+
+			this.complete = function() {
+				eForm.hide();
+				eToggle.text(opts.texts.hide);
+				eThanks.show();
+			}
+
+			this.hide = function() {
+				eComment.val('');
+				eForm.show();
+				eThanks.hide();
+				self.closed();
 			}
 		};
 
+		// Changes state in this fashion: 
+		// Closed -> Open -> Complete -> Hide -> Open ...
 		eToggle.click(function() {
-			switch(state) {
-				case 'open':
-					states.closed();
-					break;
-				case 'closed':
-					states.open();
-					break;
-				case 'complete':
-					alert('yay!');
-					break;
+			switch(state.get()) {
+			case 'closed':
+				state.set('open');
+				break;
+			case 'open':
+				state.set('closed');
+				break;
+			case 'complete':
+				state.set('hide');
+				break;
+			case 'hide':
+				state.set('open');
+				break;
 			}
 		});
 
 		function handlesubmit() {
-			alert('fu');
+			console.log('... submitting');
+			state.set('complete');
 			return false;
 		}
-		console.log('hej');
 
-		$('#szfb_form').submit(handlesubmit);
-		$('#szfb_submit').click(handlesubmit);
+		eForm.submit(handlesubmit);
+		eSubmit.click(handlesubmit);
+
+		state.set('init');
+
 	});
 
 })(jQuery);
