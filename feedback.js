@@ -19,8 +19,8 @@ var _sz_fb_config = {};
 			commentRequired: false,
 			position: 'E',
 			preset: {
-				type: 'smiley',
-				count: 5,
+				type: 'hands',
+				count: 3,
 				style: 'red'
 			},
 			font: {
@@ -92,11 +92,42 @@ var _sz_fb_config = {};
 				toggle    : $('#szfb_toggle'),
 				content   : $('#szfb_content'),
 				inner     : $('#szfb_inner'),
-				thanks    : $('#szfb_thanks'),
 				question  : $('#szfb_question'),
+				grade     : $('#szfb_grade'),
 				form      : $('#szfb_form'),
 				comment   : $('#szfb_comment'),
-				submit    : $('#szfb_submit')
+				submit    : $('#szfb_submit'),
+				thanks    : $('#szfb_thanks')
+			};
+
+			var grades = {
+				smiley: [
+					{ image: 'smiley-1.png', value: 1 },
+					{ image: 'smiley-2.png', value: 2 },
+					{ image: 'smiley-2.png', value: 3 },
+					{ image: 'smiley-2.png', value: 4 },
+					{ image: 'smiley-2.png', value: 5 }
+				],
+				stars: [
+					{ image: 'star-1.png', value: 1 },
+					{ image: 'star-2.png', value: 3 },
+					{ image: 'star-3.png', value: 5 }
+				],
+				hands: [
+					{ image: 'hand-down.png', value: 1 },
+					{ image: 'hand-up.png', value: 5 }
+				],
+				numbers: [
+					{ image: 'num-1.png', value: 1 },
+					{ image: 'num-2.png', value: 2 },
+					{ image: 'num-3.png', value: 3 },
+					{ image: 'num-4.png', value: 4 },
+					{ image: 'num-5.png', value: 5 }
+				],
+				yesno: [
+					{ image: 'no.png', value: 1 },
+					{ image: 'yes.png', value: 5 }
+				]
 			};
 
 			// State machine. Sørger for at UI'et har et coherent state. Fungerer som
@@ -128,6 +159,25 @@ var _sz_fb_config = {};
 					if(opts.layout.corners > 0) {
 						elements.content.css({ 'border-radius': opts.layout.corners + 'px 0 0 0'});
 						elements.tabbar.css({ 'border-radius': opts.layout.corners + 'px ' + opts.layout.corners + 'px 0 0'});
+					}
+
+					// Skala
+					if(grades[opts.layout.preset.type] != undefined) {
+						var _o = opts.layout.preset;
+						var choices = grades[_o.type];
+
+						var fields;
+						if(_o.count == 2) {
+							fields = [0,4];
+						} else if(_o.count == 3) {
+							fields = [0,2,4];
+						} else {
+							fields = [0,1,2,3,4];
+						}
+
+						for(var i=0; i<fields.length; i++) {
+							elements.grade.append('<a href="#" class="szfb_option szfb_' + _o.type + ' szfb_score_' + (fields[i]+1) + ((_o.style != null) ? " szfb_style_" + _o.style : null) + '">' + (fields[i]+1) + ' point</a>');
+						}
 					}
 
 					// Kommentar-boks?

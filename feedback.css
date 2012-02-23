@@ -45,6 +45,22 @@
 	background-color:#ccc;
 }
 
+#szfb_grade {
+	border:1px green solid;
+	height:35px;
+	margin-bottom:10px;
+	text-align:center;
+}
+
+.szfb_option {
+	width:35px;
+	height:35px;
+	display:inline-block;
+	/*text-indent:-9999px;*/
+	background:#ccc;
+	margin:0 5px;
+}
+
 #szfb_thanks {
 	text-align:center;
 	font-weight:bold;
