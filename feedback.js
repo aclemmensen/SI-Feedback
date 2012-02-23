@@ -3,15 +3,6 @@ var _sz_fb_config = {};
 
 (function($, undefined) {
 
-	
-	var positions = {
-		E:  'right:0; top:40%;',
-		SE: 'right:0; bottom: 0;',
-		S:  'margin:auto 0; bottom:0;',
-		SW: 'left:0; bottom:0;',
-		W:  'left:0; top:40%;'
-	};
-
 	var defaults = {
 		layout: {
 			corners: 8,
@@ -19,8 +10,8 @@ var _sz_fb_config = {};
 			commentRequired: false,
 			position: 'E',
 			preset: {
-				type: 'hands',
-				count: 3,
+				type: 'smiley',
+				count: 5,
 				style: 'red'
 			},
 			font: {
@@ -50,7 +41,9 @@ var _sz_fb_config = {};
 			include: [
 				{ s: 'horsens', e: false },
 				{ s: 'klima.horsens.dk/hest', e: true },
-				{ s: 'home', e: false }
+				{ s: 'home', e: false },
+				{ s: 'Dropbox', e: false },
+				{ s: 'givetwise', e: false }
 			],
 			exclude: [
 				{ s: 'klima.horsens.dk', e: false },
@@ -94,12 +87,22 @@ var _sz_fb_config = {};
 				inner     : $('#szfb_inner'),
 				question  : $('#szfb_question'),
 				grade     : $('#szfb_grade'),
+				options   : null,
 				form      : $('#szfb_form'),
 				comment   : $('#szfb_comment'),
 				submit    : $('#szfb_submit'),
 				thanks    : $('#szfb_thanks')
 			};
 
+			var positions = {
+				E:  'right:0; top:40%;',
+				SE: 'right:0; bottom: 0;',
+				S:  'margin:auto 0; bottom:0;',
+				SW: 'left:0; bottom:0;',
+				W:  'left:0; top:40%;'
+			};
+
+			/*
 			var grades = {
 				smiley: [
 					{ image: 'smiley-1.png', value: 1 },
@@ -129,6 +132,7 @@ var _sz_fb_config = {};
 					{ image: 'yes.png', value: 5 }
 				]
 			};
+			*/
 
 			// State machine. Sørger for at UI'et har et coherent state. Fungerer som
 			// en slags controller.
@@ -162,25 +166,29 @@ var _sz_fb_config = {};
 					}
 
 					// Skala
-					if(grades[opts.layout.preset.type] != undefined) {
-						var _o = opts.layout.preset;
-						var choices = grades[_o.type];
-
-						var fields;
-						if(_o.count == 2) {
-							fields = [0,4];
-						} else if(_o.count == 3) {
-							fields = [0,2,4];
-						} else {
-							fields = [0,1,2,3,4];
-						}
-
-						for(var i=0; i<fields.length; i++) {
-							elements.grade.append('<a href="#" class="szfb_option szfb_' + _o.type + ' szfb_score_' + (fields[i]+1) + ((_o.style != null) ? " szfb_style_" + _o.style : null) + '">' + (fields[i]+1) + ' point</a>');
-						}
+					var _o = opts.layout.preset;
+					var fields;
+					if(_o.count == 2) {
+						fields = [0,4];
+					} else if(_o.count == 3) {
+						fields = [0,2,4];
+					} else {
+						fields = [0,1,2,3,4];
 					}
 
-					// Kommentar-boks?
+					for(var i=0; i<fields.length; i++) {
+						elements.grade.append('<div class="szfb_option_wrapper"><a href="#" class="szfb_option szfb_score_' + (fields[i]+1) + '" style="background-image:url(sprites/' + _o.type + '.png); background-position:' + (-(fields[i]*28)) + 'px 0">' + (fields[i]+1) + '/5</a></div>');
+					}
+
+					elements.options = elements.grade.find('.szfb_option');
+
+					elements.options.click(function() {
+						elements.grade.find('div, a').removeClass('szfb_selected');
+						$(this).add($(this).parent()).addClass('szfb_selected');
+						return false;
+					});
+
+					// Kommentarboks?
 					if(opts.layout.comment) {
 						elements.comment.css({'border-color': opts.layout.colors.text}).show();
 					}
@@ -200,18 +208,20 @@ var _sz_fb_config = {};
 					elements.thanks.text(opts.texts.confirmation);
 					elements.submit.val(opts.texts.button);
 
+					// Vis boks
+					elements.container.show();
+
 					// Originalt state
 					self.set('close');
 				}
 
 				this.close = function() { 
-					elements.inner.hide();
-					elements.toggle.text(opts.texts.title);
+					elements.inner.slideUp(function() { elements.toggle.text(opts.texts.title); });
 				}
 
 				this.open = function() {
-					elements.inner.show();
-					elements.toggle.text(opts.texts.close);
+					elements.inner.slideDown(function() { elements.toggle.text(opts.texts.close); });
+					
 				}
 
 				this.invalid = function() {
@@ -225,10 +235,12 @@ var _sz_fb_config = {};
 				}
 
 				this.hide = function() {
-					elements.comment.val('');
-					elements.form.show();
-					elements.thanks.hide();
-					self.close();
+					elements.container.slideUp(function() {
+						elements.toggle.text(opts.texts.title);
+						elements.comment.val('');
+						elements.form.show();
+						elements.thanks.hide();
+					});
 				}
 			};
 
@@ -251,6 +263,7 @@ var _sz_fb_config = {};
 					break;
 				}
 			});
+
 
 			function handlesubmit() {
 				console.log('... submitting');

@@ -5,6 +5,7 @@
 	width:250px;
 	font-size:13px;
 	font-family:Arial;
+	display:none;
 }
 
 #szfb_tabbar {
@@ -28,38 +29,65 @@
 }
 
 #szfb_inner {
-	padding:5px;
+	padding:10px;
 }
 
 #szfb_question {
+	display:block;
 	font-weight:bold;
-	margin:5px 0 10px 0;
+	margin:0px 0 10px 0;
 	font-size:100%;
 }
 
 #szfb_comment {
-	width:230px;
+	background:#eee;
+	text-align:center;
+	padding-top:5px;
+	margin-bottom:10px;
+}
+
+#szfb_comment_ta {
+	width:220px;
 	height:50px;
 	font-size:90%;
 	font-family:Arial;
-	background-color:#ccc;
+	background-color:#eee;
+	border:0;
+	padding:0;
+	margin:0;
 }
 
 #szfb_grade {
-	border:1px green solid;
-	height:35px;
-	margin-bottom:10px;
+	height:28px;
 	text-align:center;
+	background:#333;
+	border-radius:5px 5px 0 0;
+	padding:10px 0 8px 0;
+}
+
+.szfb_option_wrapper {
+	width:28px;
+	height:36px;
+	display:inline-block;
+	margin:0 5px;
+}
+
+.szfb_option_wrapper:hover, .szfb_option_wrapper.szfb_selected {
+	background:url('gfx/arrow.png') no-repeat 50% 100%;
 }
 
 .szfb_option {
-	width:35px;
-	height:35px;
-	display:inline-block;
-	/*text-indent:-9999px;*/
-	background:#ccc;
-	margin:0 5px;
+	width:28px;
+	height:28px;
+	text-indent:-9999px;
+	display:block;
 }
+
+.szfb_score_1.szfb_selected, .szfb_score_1:hover { background-position:     0 -28px !important; }
+.szfb_score_2.szfb_selected, .szfb_score_2:hover { background-position: -28px -28px !important; }
+.szfb_score_3.szfb_selected, .szfb_score_3:hover { background-position: -56px -28px !important; }
+.szfb_score_4.szfb_selected, .szfb_score_4:hover { background-position: -84px -28px !important; }
+.szfb_score_5.szfb_selected, .szfb_score_5:hover { background-position:-112px -28px !important; }
 
 #szfb_thanks {
 	text-align:center;
