@@ -1,5 +1,6 @@
 // Defineret af backend, følger nedenstående schema
 var _sz_fb_config = {};
+var szfb;
 
 (function($, undefined) {
 
@@ -8,7 +9,8 @@ var _sz_fb_config = {};
 			corners: 8,
 			comment: true,
 			commentRequired: false,
-			position: 'E',
+			position: 'SE',
+			anim_duration: 300,
 			preset: {
 				type: 'smiley',
 				count: 5,
@@ -19,7 +21,7 @@ var _sz_fb_config = {};
 				size: '12'
 			},
 			colors: {
-				background: '#ca0000',
+				background: '#888',
 				text: '#ffffff',
 				error: '#ca0000'
 			}
@@ -59,14 +61,14 @@ var _sz_fb_config = {};
 	var matcher = {
 		loc: window.location.toString(),
 		check_url: function(url) {
-			console.log('checking %s (%s)', url.s, url.e ? 'exact' : 'fuzzy');
+			//console.log('checking %s (%s)', url.s, url.e ? 'exact' : 'fuzzy');
 			return (url.e == true) 
 				? this.loc == url.s
 				: this.loc.indexOf(url.s) > -1
 		},
 		check_list: function(list) {
 			for(var i=0; i<list.length; i++) {
-				if(this.check_url(list[i])) return true;
+				if(list[i] != undefined && this.check_url(list[i])) return true;
 			}
 			return false;
 		},
@@ -95,59 +97,29 @@ var _sz_fb_config = {};
 			};
 
 			var positions = {
-				E:  'right:0; top:40%;',
-				SE: 'right:0; bottom: 0;',
-				S:  'margin:auto 0; bottom:0;',
-				SW: 'left:0; bottom:0;',
-				W:  'left:0; top:40%;'
+				E:  { css: function() { return { 'right': '0px', 'top': '40%' } }, name: 'e', recalc: false },
+				SE: { css: function() { return { 'right': '10px', 'bottom': '0px' } }, name: 'se', recalc: false },
+				S:  { css: function() { return { 'left': ($(window).width()-elements.container.width())/2, 'bottom': '0px' } }, name: 's', recalc: true },
+				SW: { css: function() { return { 'left': '10px', 'bottom': '0px' } }, name: 'sw', recalc: false },
+				W:  { css: function() { return { 'left': '0px', 'top':  ($(window).height()-elements.container.height())/2 } }, name: 'w', recalc: true }
 			};
-
-			/*
-			var grades = {
-				smiley: [
-					{ image: 'smiley-1.png', value: 1 },
-					{ image: 'smiley-2.png', value: 2 },
-					{ image: 'smiley-2.png', value: 3 },
-					{ image: 'smiley-2.png', value: 4 },
-					{ image: 'smiley-2.png', value: 5 }
-				],
-				stars: [
-					{ image: 'star-1.png', value: 1 },
-					{ image: 'star-2.png', value: 3 },
-					{ image: 'star-3.png', value: 5 }
-				],
-				hands: [
-					{ image: 'hand-down.png', value: 1 },
-					{ image: 'hand-up.png', value: 5 }
-				],
-				numbers: [
-					{ image: 'num-1.png', value: 1 },
-					{ image: 'num-2.png', value: 2 },
-					{ image: 'num-3.png', value: 3 },
-					{ image: 'num-4.png', value: 4 },
-					{ image: 'num-5.png', value: 5 }
-				],
-				yesno: [
-					{ image: 'no.png', value: 1 },
-					{ image: 'yes.png', value: 5 }
-				]
-			};
-			*/
 
 			// State machine. Sørger for at UI'et har et coherent state. Fungerer som
 			// en slags controller.
 			var state = new function() {
 				var state = '';
+				var oldstate = '';
 				var self = this;
 
 				// Setter kalder metode som sætter det valgte state.
 				this.set = function(to) {
+					self.oldstate = self.state;
 					self.state = to;
-					console.log('Setting state %s', to);
+					//console.log('Setting state %s', to);
 					if(self[to] !== undefined) {
 						self[to].call();
 					} else {
-						console.log('No state %s', to);
+						//console.log('No state %s', to);
 					}
 				}
 
@@ -156,14 +128,6 @@ var _sz_fb_config = {};
 
 				// Init state. Grundliggende opsætning af tekster, farver osv.
 				this.init = function() {
-					// Fonte
-					elements.container.css({ 'font-family': opts.layout.font.name, 'font-size': opts.layout.font.size + 'px'});
-
-					// Border radius
-					if(opts.layout.corners > 0) {
-						elements.content.css({ 'border-radius': opts.layout.corners + 'px 0 0 0'});
-						elements.tabbar.css({ 'border-radius': opts.layout.corners + 'px ' + opts.layout.corners + 'px 0 0'});
-					}
 
 					// Skala
 					var _o = opts.layout.preset;
@@ -188,11 +152,6 @@ var _sz_fb_config = {};
 						return false;
 					});
 
-					// Kommentarboks?
-					if(opts.layout.comment) {
-						elements.comment.css({'border-color': opts.layout.colors.text}).show();
-					}
-
 					// Baggrundsfarve
 					$([elements.tabbar, elements.content]).each(function() {
 						this.css({'background-color': opts.layout.colors.background});
@@ -203,25 +162,82 @@ var _sz_fb_config = {};
 						this.css({color: opts.layout.colors.text});
 					});
 
-					// Tekster
-					elements.question.text(opts.texts.question);
-					elements.thanks.text(opts.texts.confirmation);
-					elements.submit.val(opts.texts.button);
+					// Fonte og position
+					var position = positions[opts.layout.position];
+					elements.container
+						.css($.extend({ 
+								'font-family': opts.layout.font.name,
+								'font-size': opts.layout.font.size + 'px',
+								'position': 'fixed'
+							}, 
+							position.css()))
+						.addClass('szfb_position_' + position.name);
+
+					if(position.recalc) {
+						$(window).bind('resize', function() { 
+							elements.container.css(position.css());
+						});
+					}
+
+					// Border radius
+					if(opts.layout.corners > 0) {
+						var br = opts.layout.corners;
+						var cbr, tbr, gbr;
+	
+						switch(position.name) {
+						case 'e':
+						case 'w':
+							break;
+						case 'sw':
+						case 's':
+							cbr = '0 ' + br + 'px 0 0';
+							break;
+						default:
+							cbr = br + 'px 0 0 0';
+						}
+						tbr = br + 'px ' + br + 'px 0 0';
+
+						gbr = (opts.layout.comment) ? tbr : br + 'px';
+
+						elements.content.css({ 'border-radius': cbr });
+						elements.tabbar.css({ 'border-radius': tbr });
+						elements.grade.css({ 'border-radius': gbr });
+					}
 
 					// Vis boks
 					elements.container.show();
+				}
 
-					// Originalt state
-					self.set('close');
+				this.destroy = function() {
+					elements.grade.find('.szfb_option_wrapper').remove();
+					for(i in positions) {
+						elements.container.removeClass('szfb_position_' + i.name);
+					}
 				}
 
 				this.close = function() { 
-					elements.inner.slideUp(function() { elements.toggle.text(opts.texts.title); });
+					elements.container.show();
+					elements.inner.slideUp(opts.layout.anim_duration, function() { elements.toggle.text(opts.texts.title); });
 				}
 
 				this.open = function() {
-					elements.inner.slideDown(function() { elements.toggle.text(opts.texts.close); });
-					
+					elements.container.show();
+					elements.thanks.hide();
+					elements.form.show();
+					// Kommentarboks?
+					if(opts.layout.comment) {
+						elements.comment.show();
+						elements.container.removeClass('szfb_no_comment');
+					} else {
+						elements.container.addClass('szfb_no_comment');
+						elements.comment.hide();
+					}
+
+					// Tekster
+					elements.question.text(opts.texts.question);
+					elements.submit.text(opts.texts.button);
+
+					elements.inner.slideDown(opts.layout.anim_duration, function() { elements.toggle.text(opts.texts.close); });
 				}
 
 				this.invalid = function() {
@@ -229,18 +245,27 @@ var _sz_fb_config = {};
 				}
 
 				this.complete = function() {
+					elements.container.show();
+					elements.inner.show();
+					elements.thanks.text(opts.texts.confirmation).show();
 					elements.form.hide();
 					elements.toggle.text(opts.texts.hide);
-					elements.thanks.show();
 				}
 
 				this.hide = function() {
-					elements.container.slideUp(function() {
+					elements.container.slideUp(opts.layout.anim_duration, function() {
 						elements.toggle.text(opts.texts.title);
 						elements.comment.val('');
 						elements.form.show();
 						elements.thanks.hide();
 					});
+				}
+
+				this.reload = function() {
+					var resume = self.oldstate;
+					self.set('destroy');
+					self.set('init');
+					self.set(resume);
 				}
 			};
 
@@ -266,7 +291,7 @@ var _sz_fb_config = {};
 
 
 			function handlesubmit() {
-				console.log('... submitting');
+				//console.log('... submitting');
 				state.set('complete');
 				return false;
 			}
@@ -277,8 +302,19 @@ var _sz_fb_config = {};
 			state.set('init');
 			state.set('open');
 
+			szfb = {
+				reload: function(new_opts) {
+					opts = $.extend(opts, new_opts);
+					state.set('reload');
+				},
+				getopts: function() {
+					return opts;
+				},
+				setstate: function(new_state) {
+					state.set(new_state);
+				}
+			};
+
 		});
-	} else {
-		console.log("Stay hidden");
 	}
 })(jQuery);

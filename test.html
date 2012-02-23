@@ -6,6 +6,28 @@
 		<link rel="stylesheet" href="feedback.css" />
 		<script type="text/javascript" src="jquery.min.js"></script>
 		<script type="text/javascript" src="feedback.js"></script>
+		<script type="text/javascript">
+			$(function() {
+
+			var t = szfb.getopts();
+			$('#c_color').val(t.layout.colors.background);
+			$('#c_count').val(t.layout.preset.count);
+			$('#c_comment').attr('checked', t.layout.comment);
+
+			$('#customize input').bind('change', function() {
+				var t = szfb.getopts();
+				t.layout.colors.background = $('#c_color').val();
+				t.layout.preset.count = $('#c_count').val();
+				t.layout.comment = $('#c_comment').is(':checked');
+				szfb.reload(t);
+			});
+
+			$('#state input[type="button"]').click(function() {
+				szfb.setstate($(this).val());
+			});
+
+			});
+		</script>
 	</head>
 	<body>
 
@@ -24,13 +46,86 @@
 							<textarea id="szfb_comment_ta"></textarea>
 						</div>
 						<div id="szfb_formaction">
-							<input type="submit" id="szfb_submit" value="Send" name="commit" />
+							<a href="#" id="szfb_submit"></a>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 
+		<form id="customize">
+			<h2>Options</h2>
+
+			<p>Change a value and watch the box update itself.</p>
+
+			<label for="c_color">Color</label>
+			<input type="text" name="color" id="c_color" class="c" /><br />
+
+			<label for="c_count">Count</label>
+			<input type="text" name="count" id="c_count" class="c" /><br />
+
+			<label for="c_comment">Comments?</label>
+			<input type="checkbox" name="comments" id="c_comment" /><br />
+		</form>
+
+		<form id="state">
+			<h2>Set state</h2>
+			<input type="button" value="close" />
+			<input type="button" value="open" />
+			<input type="button" value="complete" />
+			<input type="button" value="hide" />
+		</form>
+
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
+		<p>Hej</p>
 
 	</body>
 </html>
