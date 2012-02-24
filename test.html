@@ -13,12 +13,16 @@
 			$('#c_color').val(t.layout.colors.background);
 			$('#c_count').val(t.layout.preset.count);
 			$('#c_comment').attr('checked', t.layout.comment);
+			$('#c_fontsize').val(t.layout.font.size);
 
-			$('#customize input').bind('change', function() {
+			$('#customize input, #customize select').bind('change', function() {
 				var t = szfb.getopts();
 				t.layout.colors.background = $('#c_color').val();
 				t.layout.preset.count = $('#c_count').val();
 				t.layout.comment = $('#c_comment').is(':checked');
+				t.layout.position = $('#c_position').val();
+				t.layout.font.name = $('#c_font').val();
+				t.layout.font.size = $('#c_fontsize').val();
 				szfb.reload(t);
 			});
 
@@ -58,6 +62,18 @@
 
 			<p>Change a value and watch the box update itself.</p>
 
+			<label for="c_font">Font name</label>
+			<select name="font" id="c_font">
+				<option></option>
+				<option>Arial</option>
+				<option>Verdana</option>
+				<option>Times New Roman</option>
+				<option>Georgia</option>
+			</select><br />
+
+			<label for="c_fontsize">Font size</label>
+			<input type="text" name="fontsize" id="c_fontsize" /><br />
+
 			<label for="c_color">Color</label>
 			<input type="text" name="color" id="c_color" class="c" /><br />
 
@@ -66,6 +82,15 @@
 
 			<label for="c_comment">Comments?</label>
 			<input type="checkbox" name="comments" id="c_comment" /><br />
+
+			<label for="c_position">Position</label>
+			<select name="position" id="c_position">
+				<option value="E">East</option>
+				<option value="SE" selected>South-East</option>
+				<option value="S">South</option>
+				<option value="SW">South-West</option>
+				<option value="W">West</option>
+			</select><br />
 		</form>
 
 		<form id="state">

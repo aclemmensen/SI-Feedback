@@ -97,11 +97,11 @@ var szfb;
 			};
 
 			var positions = {
-				E:  { css: function() { return { 'right': '0px', 'top': '40%' } }, name: 'e', recalc: false },
-				SE: { css: function() { return { 'right': '10px', 'bottom': '0px' } }, name: 'se', recalc: false },
-				S:  { css: function() { return { 'left': ($(window).width()-elements.container.width())/2, 'bottom': '0px' } }, name: 's', recalc: true },
-				SW: { css: function() { return { 'left': '10px', 'bottom': '0px' } }, name: 'sw', recalc: false },
-				W:  { css: function() { return { 'left': '0px', 'top':  ($(window).height()-elements.container.height())/2 } }, name: 'w', recalc: true }
+				E:  { css: function() { return { 'right': '0px', 'top': '40%', bottom: 'auto', left: 'auto' } }, name: 'e', recalc: false },
+				SE: { css: function() { return { 'right': '10px', 'bottom': '0px', left: 'auto', top: 'auto' } }, name: 'se', recalc: false },
+				S:  { css: function() { return { 'left': ($(window).width()-elements.container.width())/2, 'bottom': '0px', top: 'auto', right: 'auto' } }, name: 's', recalc: true },
+				SW: { css: function() { return { 'left': '10px', 'bottom': '0px', top: 'auto', right: 'auto' } }, name: 'sw', recalc: false },
+				W:  { css: function() { return { 'left': '0px', 'top':  ($(window).height()-elements.container.height())/2 , bottom: 'auto', right: 'auto' } }, name: 'w', recalc: true }
 			};
 
 			// State machine. Sørger for at UI'et har et coherent state. Fungerer som
@@ -171,6 +171,7 @@ var szfb;
 								'position': 'fixed'
 							}, 
 							position.css()))
+						.removeClass()
 						.addClass('szfb_position_' + position.name);
 
 					if(position.recalc) {
@@ -185,9 +186,6 @@ var szfb;
 						var cbr, tbr, gbr;
 	
 						switch(position.name) {
-						case 'e':
-						case 'w':
-							break;
 						case 'sw':
 						case 's':
 							cbr = '0 ' + br + 'px 0 0';
