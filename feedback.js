@@ -9,7 +9,7 @@ var szfb;
 			corners: 8,
 			comment: true,
 			commentRequired: false,
-			position: 'SE',
+			position: 'E',
 			anim_duration: 300,
 			preset: {
 				type: 'smiley',
@@ -96,12 +96,136 @@ var szfb;
 				thanks    : $('#szfb_thanks')
 			};
 
+			function hide(complete) {
+				console.log('hiding other');
+				elements.inner.slideUp(opts.layout.anim_duration, complete);
+			}
+
+			function show(complete) {
+				console.log('showing other');
+				elements.inner.slideDown(opts.layout.anim_duration, complete);
+			}
+
 			var positions = {
-				E:  { css: function() { return { 'right': '0px', 'top': '40%', bottom: 'auto', left: 'auto' } }, name: 'e', recalc: false },
-				SE: { css: function() { return { 'right': '10px', 'bottom': '0px', left: 'auto', top: 'auto' } }, name: 'se', recalc: false },
-				S:  { css: function() { return { 'left': ($(window).width()-elements.container.width())/2, 'bottom': '0px', top: 'auto', right: 'auto' } }, name: 's', recalc: true },
-				SW: { css: function() { return { 'left': '10px', 'bottom': '0px', top: 'auto', right: 'auto' } }, name: 'sw', recalc: false },
-				W:  { css: function() { return { 'left': '0px', 'top':  ($(window).height()-elements.container.height())/2 , bottom: 'auto', right: 'auto' } }, name: 'w', recalc: true }
+				// EAST
+				E: { 
+					css: function() { 
+						elements.inner.show(); 
+						return { 
+							right:  (-(elements.container.width()-8)) + 'px', 
+							top:    ($(window).height()-elements.container.height())/2, 
+							bottom: 'auto', 
+							left:   'auto' 
+						} 
+					}, 
+					show: function(complete) {
+						console.log('showing e');
+						elements.inner.show();
+						elements.container
+							.show()
+							.css({left: 'auto'})
+							.animate({right: 0}, { duration: opts.layout.anim_duration, complete: complete });
+					},
+					hide: function(complete) {
+						console.log('hiding e');
+						elements.container
+							.show()
+							.css({left: 'auto' })
+							.animate({ right: -(elements.container.width()-8)}, { duration: opts.layout.anim_duration, complete: complete });
+					},
+					name: 'e', 
+					recalc: function() {
+						return {
+							top: ($(window).height()-elements.container.height())/2
+						};
+					}
+				},
+				
+				// WEST
+				W: { 
+					css: function() { 
+						elements.inner.show();
+						return { 
+							left:   (-(elements.container.width()-8)) + 'px', 
+							top:    ($(window).height()-elements.container.height())/2 ,
+							bottom: 'auto',
+							right:  'auto' 
+						} 
+					}, 
+					show: function(complete) {
+						console.log('showing w');
+						elements.inner.show();
+						elements.container
+							.show()
+							.css({right: 'auto'})
+							.animate({left: 0}, { duration: opts.layout.anim_duration, complete: complete });
+					},
+					hide: function(complete) {
+						console.log('hiding w');
+						elements.container
+							.show()
+							.css({right: 'auto'})
+							.animate({ left: -(elements.container.width()-8) }, { duration: opts.layout.anim_duration, complete: complete });
+					},
+					name: 'w', 
+					recalc: function() {
+						return {
+							top: ($(window).height()-elements.container.height())/2
+						};
+					}
+				},
+
+				// SOUTH
+				S:  { 
+					css: function() { 
+						return { 
+							left:   ($(window).width()-elements.container.width())/2, 
+							bottom: '0px', 
+							top:    'auto', 
+							right:  'auto' 
+						} 
+					},
+					show: show,
+					hide: hide,
+					name: 's', 
+					recalc: function() {
+						return {
+							left: ($(window).width()-elements.container.width())/2 
+						};
+					}
+				},
+
+				// SOUTH-EAST
+				SE: { 
+					css: function() { 
+						return { 
+							right:  '10px', 
+							bottom: '0px', 
+							left:   'auto', 
+							top:    'auto' 
+						} 
+					}, 
+					show: show,
+					hide: hide,
+					name: 'se', 
+					recalc: false 
+				},
+
+				// SOUTH-WEST
+				SW: { 
+					css: function() { 
+						return { 
+							left:   '10px', 
+							bottom: '0px', 
+							top:    'auto', 
+							right:  'auto' 
+						} 
+					}, 
+					show: show,
+					hide: hide,
+					name: 'sw',
+					recalc: false 
+				}
 			};
 
 			// State machine. Sørger for at UI'et har et coherent state. Fungerer som
@@ -109,6 +233,7 @@ var szfb;
 			var state = new function() {
 				var state = '';
 				var oldstate = '';
+				var pos;
 				var self = this;
 
 				// Setter kalder metode som sætter det valgte state.
@@ -117,6 +242,9 @@ var szfb;
 					self.state = to;
 					//console.log('Setting state %s', to);
 					if(self[to] !== undefined) {
+						elements.container
+							.removeClass()
+							.addClass('szfb_position_' + positions[opts.layout.position].name + ' szfb_textcolor_' + 'light' + ' szfb_state_' + to);
 						self[to].call();
 					} else {
 						//console.log('No state %s', to);
@@ -126,7 +254,7 @@ var szfb;
 				// Getter returnerer aktivt state.
 				this.get = function() { return self.state; }
 
-				// Init state. Grundliggende opsætning af tekster, farver osv.
+				// INIT state. Grundliggende opsætning af tekster, farver osv.
 				this.init = function() {
 
 					// Skala
@@ -140,12 +268,14 @@ var szfb;
 						fields = [0,1,2,3,4];
 					}
 
+					// Fjern eventuel skala, opret ny
+					elements.grade.html('');
 					for(var i=0; i<fields.length; i++) {
 						elements.grade.append('<div class="szfb_option_wrapper"><a href="#" class="szfb_option szfb_score_' + (fields[i]+1) + '" style="background-image:url(sprites/' + _o.type + '.png); background-position:' + (-(fields[i]*28)) + 'px 0">' + (fields[i]+1) + '/5</a></div>');
 					}
 
+					// Hover-effekt på options
 					elements.options = elements.grade.find('.szfb_option');
-
 					elements.options.click(function() {
 						elements.grade.find('div, a').removeClass('szfb_selected');
 						$(this).add($(this).parent()).addClass('szfb_selected');
@@ -163,20 +293,18 @@ var szfb;
 					});
 
 					// Fonte og position
-					var position = positions[opts.layout.position];
+					self.pos = positions[opts.layout.position];
 					elements.container
 						.css($.extend({ 
 								'font-family': opts.layout.font.name,
 								'font-size': opts.layout.font.size + 'px',
 								'position': 'fixed'
 							}, 
-							position.css()))
-						.removeClass()
-						.addClass('szfb_position_' + position.name);
+							self.pos.css()));
 
-					if(position.recalc) {
+					if(self.pos.recalc !== false) {
 						$(window).bind('resize', function() { 
-							elements.container.css(position.css());
+							elements.container.css(self.pos.recalc());
 						});
 					}
 
@@ -185,43 +313,32 @@ var szfb;
 						var br = opts.layout.corners;
 						var cbr, tbr, gbr;
 	
-						switch(position.name) {
+						switch(self.pos.name) {
+						case 'e':
+							cbr = '0px 0px 0px ' + br + 'px';
+							tbr = br + 'px ' + '0px ' + '0px ' + br + 'px';
+							break;
+						case 'w':
+							cbr = '0px 0px ' + br + 'px 0px';
+							tbr = '0px ' + br + 'px ' + br + 'px 0';
+							break;
 						case 'sw':
 						case 's':
 							cbr = '0 ' + br + 'px 0 0';
+							tbr = br + 'px ' + br + 'px 0 0';
 							break;
 						default:
 							cbr = br + 'px 0 0 0';
+							tbr = br + 'px ' + br + 'px 0 0';
 						}
-						tbr = br + 'px ' + br + 'px 0 0';
 
-						gbr = (opts.layout.comment) ? tbr : br + 'px';
+						gbr = (opts.layout.comment) ? br + 'px ' + br + 'px 0 0' : br + 'px';
 
 						elements.content.css({ 'border-radius': cbr });
 						elements.tabbar.css({ 'border-radius': tbr });
 						elements.grade.css({ 'border-radius': gbr });
 					}
 
-					// Vis boks
-					elements.container.show();
-				}
-
-				this.destroy = function() {
-					elements.grade.find('.szfb_option_wrapper').remove();
-					for(i in positions) {
-						elements.container.removeClass('szfb_position_' + i.name);
-					}
-				}
-
-				this.close = function() { 
-					elements.container.show();
-					elements.inner.slideUp(opts.layout.anim_duration, function() { elements.toggle.text(opts.texts.title); });
-				}
-
-				this.open = function() {
-					elements.container.show();
-					elements.thanks.hide();
-					elements.form.show();
 					// Kommentarboks?
 					if(opts.layout.comment) {
 						elements.comment.show();
@@ -232,10 +349,33 @@ var szfb;
 					}
 
 					// Tekster
+					elements.toggle.text(opts.texts.title);
+
+					// Vis boks
+					elements.container.show();
+				}
+
+				this.destroy = function() {
+					elements.grade.find('.szfb_option_wrapper').remove();
+					elements.container.removeClass();
+				}
+
+				this.close = function() { 
+					elements.container.show();
+					self.pos.hide(function() { elements.toggle.text(opts.texts.title); });
+				}
+
+				this.open = function() {
+					console.log('sate hej');
+					elements.container.show();
+					elements.thanks.hide();
+					elements.form.show();
+
+					// Tekster
 					elements.question.text(opts.texts.question);
 					elements.submit.text(opts.texts.button);
 
-					elements.inner.slideDown(opts.layout.anim_duration, function() { elements.toggle.text(opts.texts.close); });
+					self.pos.show(function() { elements.toggle.text(opts.texts.close); });
 				}
 
 				this.invalid = function() {
@@ -245,13 +385,14 @@ var szfb;
 				this.complete = function() {
 					elements.container.show();
 					elements.inner.show();
+					self.pos.show();
 					elements.thanks.text(opts.texts.confirmation).show();
 					elements.form.hide();
 					elements.toggle.text(opts.texts.hide);
 				}
 
 				this.hide = function() {
-					elements.container.slideUp(opts.layout.anim_duration, function() {
+					self.pos.hide(function() {
 						elements.toggle.text(opts.texts.title);
 						elements.comment.val('');
 						elements.form.show();
@@ -273,6 +414,7 @@ var szfb;
 			elements.toggle.click(function() {
 				switch(state.get()) {
 				case 'close':
+				case 'init':
 					state.set('open');
 					break;
 				case 'open':
@@ -298,7 +440,7 @@ var szfb;
 			elements.submit.click(handlesubmit);
 
 			state.set('init');
-			state.set('open');
+			//state.set('close');
 
 			szfb = {
 				reload: function(new_opts) {
