@@ -9,25 +9,25 @@
 		<script type="text/javascript">
 			$(function() {
 
-			var t = szfb.getopts();
+			var t = _szfb.getopts();
 			$('#c_color').val(t.layout.colors.background);
 			$('#c_count').val(t.layout.preset.count);
 			$('#c_comment').attr('checked', t.layout.comment);
 			$('#c_fontsize').val(t.layout.font.size);
 
 			$('#customize input, #customize select').bind('change', function() {
-				var t = szfb.getopts();
+				var t = _szfb.getopts();
 				t.layout.colors.background = $('#c_color').val();
 				t.layout.preset.count = $('#c_count').val();
 				t.layout.comment = $('#c_comment').is(':checked');
 				t.layout.position = $('#c_position').val();
 				t.layout.font.name = $('#c_font').val();
 				t.layout.font.size = $('#c_fontsize').val();
-				szfb.reload(t);
+				_szfb.reload(t);
 			});
 
 			$('#state input[type="button"]').click(function() {
-				szfb.setstate($(this).val());
+				_szfb.setstate($(this).val());
 			});
 
 			});

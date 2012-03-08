@@ -1,6 +1,6 @@
 // Defineret af backend, følger nedenstående schema
-var _sz_fb_config = {};
-var szfb;
+var _szfb_config = [{}];
+var _szfb;
 
 (function($, undefined) {
 
@@ -55,7 +55,10 @@ var szfb;
 	};
 
 	// Merge default options med det, vi har fået fra SZ-scriptet
-	var opts = $.extend(defaults, _sz_fb_config);
+	var _opts = [], opts = {};
+	for(var i=0; i<_szfb_config.length; i++) {
+		_opts[i] = $.extend(defaults, _szfb_config[i]);
+	}
 
 	// Matcher-namespace. Undersøger, om survey'et skal vises på denne side.
 	var matcher = {
@@ -72,8 +75,15 @@ var szfb;
 			}
 			return false;
 		},
+		// Side effects: Sætter opts objekt
 		show: function() {
-			return this.check_list(opts.matches.include) && !this.check_list(opts.matches.exclude);
+			for(var i=0; i<_opts.length; i++) {
+				if(this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude)) {
+					opts = _opts[i];
+					return true;
+				}
+			}
+			return false;
 		}
 	};
 
@@ -442,7 +452,7 @@ var szfb;
 			state.set('init');
 			//state.set('close');
 
-			szfb = {
+			_szfb = {
 				reload: function(new_opts) {
 					opts = $.extend(opts, new_opts);
 					state.set('reload');
