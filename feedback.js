@@ -22,7 +22,7 @@ var _szfb;
 			},
 			colors: {
 				background: '#888',
-				text: '#ffffff',
+				text: 'white',
 				error: '#ca0000'
 			}
 		},
@@ -257,7 +257,7 @@ var _szfb;
 					if(self[to] !== undefined) {
 						elements.container
 							.removeClass()
-							.addClass('szfb_position_' + positions[opts.layout.position].name + ' szfb_textcolor_' + 'light' + ' szfb_state_' + to);
+							.addClass('szfb_position_' + positions[opts.layout.position].name + ' szfb_textcolor_' + opts.layout.colors.text + ' szfb_state_' + to);
 						self[to].call();
 					} else {
 						//console.log('No state %s', to);

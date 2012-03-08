@@ -30,6 +30,12 @@
 				$('#state input[type="button"]').click(function() {
 					_szfb.setstate($(this).val());
 				});
+
+				$('.t_color').click(function() {
+					var t = _szfb.getopts();
+					t.layout.colors.text = $(this).val();
+					_szfb.reload(t);
+				});
 			}
 
 			});
@@ -78,6 +84,10 @@
 
 			<label for="c_color">Color</label>
 			<input type="text" name="color" id="c_color" class="c" /><br />
+
+			<label for="t_color">Text color</label>
+			<input type="button" name="t_color" class="t_color" value="white" />
+			<input type="button" name="t_color" class="t_color" value="black" /><br />
 
 			<label for="c_count">Count</label>
 			<input type="text" name="count" id="c_count" class="c" /><br />
