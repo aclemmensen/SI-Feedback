@@ -447,6 +447,7 @@ var _szfb;
 			function handlesubmit() {
 				//console.log('... submitting');
 				state.set('complete');
+				console.log(_sz.opts.szfbid);
 				return false;
 			}
 
