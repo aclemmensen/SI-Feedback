@@ -4,6 +4,11 @@ var _szfb;
 
 (function($, undefined) {
 
+	if(window['_sz'] == undefined) {
+		console.log('siteanalyze_ng not loaded');
+		return false;
+	}
+
 	var defaults = {
 		layout: {
 			corners: 8,
