@@ -188,6 +188,7 @@ var _szfb;
 				// SOUTH
 				S:  { 
 					css: function() { 
+						elements.inner.hide();
 						return { 
 							left:   ($(window).width()-elements.container.width())/2, 
 							bottom: '0px', 
@@ -208,6 +209,7 @@ var _szfb;
 				// SOUTH-EAST
 				SE: { 
 					css: function() { 
+						elements.inner.hide();
 						return { 
 							right:  '10px', 
 							bottom: '0px', 
@@ -224,6 +226,7 @@ var _szfb;
 				// SOUTH-WEST
 				SW: { 
 					css: function() { 
+						elements.inner.hide();
 						return { 
 							left:   '10px', 
 							bottom: '0px', 
@@ -376,7 +379,6 @@ var _szfb;
 				}
 
 				this.open = function() {
-					console.log('sate hej');
 					elements.container.show();
 					elements.thanks.hide();
 					elements.form.show();
