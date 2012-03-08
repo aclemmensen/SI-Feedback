@@ -80,6 +80,11 @@ body {
 #szfb_container.szfb_state_open     #szfb_toggle { background-position:0 -78px }
 #szfb_container.szfb_state_complete #szfb_toggle { background-position:0 -156px }
 
+#szfb_container.szfb_position_w #szfb_content,
+#szfb_container.szfb_position_e #szfb_content {
+	min-height:100px;
+}
+
 #szfb_inner {
 	padding:10px;
 }
