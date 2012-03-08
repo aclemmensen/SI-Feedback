@@ -48,9 +48,9 @@ var _szfb;
 				{ s: 'givetwise', e: false }
 			],
 			exclude: [
-				{ s: 'klima.horsens.dk', e: false },
-				//{ s: 'feedback', e: false }
-			]
+				{ s: 'klima.horsens.dk', e: false }
+			],
+			force: false
 		}
 	};
 
@@ -78,7 +78,7 @@ var _szfb;
 		// Side effects: Sætter opts objekt
 		show: function() {
 			for(var i=0; i<_opts.length; i++) {
-				if(this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude)) {
+				if(_opts[i].matches.force || (this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude))) {
 					opts = _opts[i];
 					return true;
 				}
@@ -288,6 +288,7 @@ var _szfb;
 					}
 
 					// Hover-effekt på options
+					// TODO: Stjerner har anderledes hover-state
 					elements.options = elements.grade.find('.szfb_option');
 					elements.options.click(function() {
 						elements.grade.find('div, a').removeClass('szfb_selected');
@@ -313,12 +314,18 @@ var _szfb;
 								'font-size': opts.layout.font.size + 'px',
 								'position': 'fixed'
 							}, 
-							self.pos.css()));
+							self.pos.css())
+						);
 
-					if(self.pos.recalc !== false) {
-						$(window).bind('resize', function() { 
-							elements.container.css(self.pos.recalc());
-						});
+					function reposition() {
+						if(self.pos.recalc != false) elements.container.css(self.pos.recalc());
+					}
+
+					// Bind resize handler for de positions, der kræver det
+					if(self.pos.recalc != false) {
+						$(window).bind('resize', reposition);
+					} else {
+						$(window).unbind('resize', reposition);
 					}
 
 					// Border radius
@@ -468,5 +475,7 @@ var _szfb;
 			};
 
 		});
+	} else {
+		_szfb = null;
 	}
 })(jQuery);
