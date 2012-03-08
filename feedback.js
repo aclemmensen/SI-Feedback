@@ -64,7 +64,6 @@ var _szfb;
 	var matcher = {
 		loc: window.location.toString(),
 		check_url: function(url) {
-			//console.log('checking %s (%s)', url.s, url.e ? 'exact' : 'fuzzy');
 			return (url.e == true) 
 				? this.loc == url.s
 				: this.loc.indexOf(url.s) > -1
@@ -107,12 +106,10 @@ var _szfb;
 			};
 
 			function hide(complete) {
-				console.log('hiding other');
 				elements.inner.slideUp(opts.layout.anim_duration, complete);
 			}
 
 			function show(complete) {
-				console.log('showing other');
 				elements.inner.slideDown(opts.layout.anim_duration, complete);
 			}
 
@@ -129,7 +126,6 @@ var _szfb;
 						} 
 					}, 
 					show: function(complete) {
-						console.log('showing e');
 						elements.inner.show();
 						elements.container
 							.show()
@@ -137,7 +133,6 @@ var _szfb;
 							.animate({right: 0}, { duration: opts.layout.anim_duration, complete: complete });
 					},
 					hide: function(complete) {
-						console.log('hiding e');
 						elements.container
 							.show()
 							.css({left: 'auto' })
@@ -163,7 +158,6 @@ var _szfb;
 						} 
 					}, 
 					show: function(complete) {
-						console.log('showing w');
 						elements.inner.show();
 						elements.container
 							.show()
@@ -171,7 +165,6 @@ var _szfb;
 							.animate({left: 0}, { duration: opts.layout.anim_duration, complete: complete });
 					},
 					hide: function(complete) {
-						console.log('hiding w');
 						elements.container
 							.show()
 							.css({right: 'auto'})
@@ -253,14 +246,11 @@ var _szfb;
 				this.set = function(to) {
 					self.oldstate = self.state;
 					self.state = to;
-					//console.log('Setting state %s', to);
 					if(self[to] !== undefined) {
 						elements.container
 							.removeClass()
 							.addClass('szfb_position_' + positions[opts.layout.position].name + ' szfb_textcolor_' + opts.layout.colors.text + ' szfb_state_' + to);
 						self[to].call();
-					} else {
-						//console.log('No state %s', to);
 					}
 				}
 
@@ -459,7 +449,6 @@ var _szfb;
 			elements.submit.click(handlesubmit);
 
 			state.set('init');
-			//state.set('close');
 
 			_szfb = {
 				reload: function(new_opts) {
