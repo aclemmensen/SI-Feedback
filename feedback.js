@@ -141,7 +141,7 @@ szfbjQuery.noConflict();
 					css: function() { 
 						elements.inner.show(); 
 						return { 
-							right:  (-(elements.container.width()-8)) + 'px',
+							right:  (-(opts.layout.width-8)) + 'px',
 							top:    ($(window).height()-elements.container.height())/2,
 							bottom: 'auto', 
 							left:   'auto' 
@@ -158,7 +158,7 @@ szfbjQuery.noConflict();
 						elements.container
 							.show()
 							.css({left: 'auto' })
-							.animate({ right: -(elements.container.width()-8)}, { duration: opts.layout.anim_duration, complete: complete });
+							.animate({ right: -(opts.layout.width-8)}, { duration: opts.layout.anim_duration, complete: complete });
 					},
 					name: 'e', 
 					recalc: function() {
@@ -204,7 +204,6 @@ szfbjQuery.noConflict();
 				S:  { 
 					css: function() { 
 						elements.inner.hide();
-						console.log($(window).width(), opts.layout.width);
 						return { 
 							left:   ($(window).width()-opts.layout.width)/2,
 							bottom: '0px', 
