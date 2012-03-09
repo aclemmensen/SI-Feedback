@@ -474,6 +474,12 @@ szfbjQuery.noConflict();
 
 			state.set('init');
 
+			// Link-hack mens i udvikling.
+			$('a').each(function() {
+				var href = $(this).attr('href');
+				$(this).attr('href', href + ((href.indexOf('?') > -1) ? '&' : '?') + 'actest=' + Date.now());
+			});
+
 			_szfb = {
 				reload: function(new_opts) {
 					opts = $.extend(opts, new_opts);
