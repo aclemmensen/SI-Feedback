@@ -20,7 +20,7 @@ szfbjQuery.noConflict();
 			corners: 8,
 			comment: true,
 			commentRequired: false,
-			position: 'S',
+			position: 'E',
 			anim_duration: 300,
 			preset: {
 				type: 'smiley',
@@ -32,7 +32,7 @@ szfbjQuery.noConflict();
 				size: '12'
 			},
 			colors: {
-				background: '#888',
+				background: '#ca0000',
 				text: 'white',
 				error: '#ca0000'
 			}
@@ -310,7 +310,7 @@ szfbjQuery.noConflict();
 
 					// Baggrundsfarve
 					$([elements.tabbar, elements.content]).each(function() {
-						this.css({'background-color': opts.layout.colors.background});
+						this.css({'background': opts.layout.colors.background});
 					});
 
 					// Tekstfarve
