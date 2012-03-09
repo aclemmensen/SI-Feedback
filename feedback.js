@@ -11,10 +11,11 @@ var _szfb;
 
 	var defaults = {
 		layout: {
+			width: 250,
 			corners: 8,
 			comment: true,
 			commentRequired: false,
-			position: 'E',
+			position: 'S',
 			anim_duration: 300,
 			preset: {
 				type: 'smiley',
@@ -55,7 +56,7 @@ var _szfb;
 			exclude: [
 				{ s: 'klima.horsens.dk', e: false }
 			],
-			force: false
+			force: true
 		}
 	};
 
@@ -84,6 +85,7 @@ var _szfb;
 			for(var i=0; i<_opts.length; i++) {
 				if(_opts[i].matches.force || (this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude))) {
 					opts = _opts[i];
+					console.log('showing feedback');
 					return true;
 				}
 			}
@@ -99,19 +101,25 @@ var _szfb;
 	if(matcher.show()) {
 		$(function() {
 
+			$('head').append('<link rel="stylesheet" href="' + config.src + '/feedback.css" />');
+
+			var _e = $('<div id="szfb_container"><div id="szfb_tabbar"><a id="szfb_toggle" href="#"></a></div><div id="szfb_content"><div id="szfb_inner" style="display:none;"><p id="szfb_thanks" style="display:none;"></p><form id="szfb_form" method="post" action="submit.php"><label id="szfb_question" for="szfb_comment_ta"></label><div id="szfb_grade">&nbsp;</div><div id="szfb_response"></div><div id="szfb_comment" style="display:none;"><textarea id="szfb_comment_ta"></textarea></div><div id="szfb_formaction"><a href="#" id="szfb_submit"></a></div></form></div></div></div>');
+
+			$('body').append(_e);
+
 			var elements = {
 				container : $('#szfb_container'),
-				tabbar    : $('#szfb_tabbar'),
-				toggle    : $('#szfb_toggle'),
-				content   : $('#szfb_content'),
-				inner     : $('#szfb_inner'),
-				question  : $('#szfb_question'),
-				grade     : $('#szfb_grade'),
+				tabbar    : $('#szfb_tabbar', _e),
+				toggle    : $('#szfb_toggle', _e),
+				content   : $('#szfb_content', _e),
+				inner     : $('#szfb_inner', _e),
+				question  : $('#szfb_question', _e),
+				grade     : $('#szfb_grade', _e),
 				options   : null,
-				form      : $('#szfb_form'),
-				comment   : $('#szfb_comment'),
-				submit    : $('#szfb_submit'),
-				thanks    : $('#szfb_thanks')
+				form      : $('#szfb_form', _e),
+				comment   : $('#szfb_comment', _e),
+				submit    : $('#szfb_submit', _e),
+				thanks    : $('#szfb_thanks', _e)
 			};
 
 			function hide(complete) {
@@ -128,8 +136,8 @@ var _szfb;
 					css: function() { 
 						elements.inner.show(); 
 						return { 
-							right:  (-(elements.container.width()-8)) + 'px', 
-							top:    ($(window).height()-elements.container.height())/2, 
+							right:  (-(elements.container.width()-8)) + 'px',
+							top:    ($(window).height()-elements.container.height())/2,
 							bottom: 'auto', 
 							left:   'auto' 
 						} 
@@ -160,8 +168,8 @@ var _szfb;
 					css: function() { 
 						elements.inner.show();
 						return { 
-							left:   (-(elements.container.width()-8)) + 'px', 
-							top:    ($(window).height()-elements.container.height())/2 ,
+							left:   (-(opts.layout.width-8)) + 'px',
+							top:    ($(window).height()-elements.container.height())/2,
 							bottom: 'auto',
 							right:  'auto' 
 						} 
@@ -177,7 +185,7 @@ var _szfb;
 						elements.container
 							.show()
 							.css({right: 'auto'})
-							.animate({ left: -(elements.container.width()-8) }, { duration: opts.layout.anim_duration, complete: complete });
+							.animate({ left: -(opts.layout.width-8) }, { duration: opts.layout.anim_duration, complete: complete });
 					},
 					name: 'w', 
 					recalc: function() {
@@ -191,8 +199,9 @@ var _szfb;
 				S:  { 
 					css: function() { 
 						elements.inner.hide();
+						console.log($(window).width(), opts.layout.width);
 						return { 
-							left:   ($(window).width()-elements.container.width())/2, 
+							left:   ($(window).width()-opts.layout.width)/2,
 							bottom: '0px', 
 							top:    'auto', 
 							right:  'auto' 
@@ -203,7 +212,7 @@ var _szfb;
 					name: 's', 
 					recalc: function() {
 						return {
-							left: ($(window).width()-elements.container.width())/2 
+							left: ($(window).width()-opts.layout.width)/2
 						};
 					}
 				},
@@ -445,6 +454,8 @@ var _szfb;
 					state.set('open');
 					break;
 				}
+
+				return false;
 			});
 
 
