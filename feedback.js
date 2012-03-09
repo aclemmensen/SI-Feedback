@@ -382,6 +382,9 @@ szfbjQuery.noConflict();
 
 					// Tekster
 					elements.toggle.text(opts.texts.title);
+					elements.question.text(opts.texts.question);
+					elements.submit.text(opts.texts.button);
+
 
 					// Vis boks
 					elements.container.show();
@@ -401,10 +404,6 @@ szfbjQuery.noConflict();
 					elements.container.show();
 					elements.thanks.hide();
 					elements.form.show();
-
-					// Tekster
-					elements.question.text(opts.texts.question);
-					elements.submit.text(opts.texts.button);
 
 					self.pos.show(function() { elements.toggle.text(opts.texts.close); });
 				}
