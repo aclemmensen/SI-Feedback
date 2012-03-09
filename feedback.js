@@ -91,6 +91,10 @@ var _szfb;
 		}
 	};
 
+	var config = {
+		src: 'http://ac.givetwise.dk/siteanalyze_fb'
+	};
+
 	// Hvis surveyet skal vises sæt document.ready op.
 	if(matcher.show()) {
 		$(function() {
@@ -279,7 +283,7 @@ var _szfb;
 					// Fjern eventuel skala, opret ny
 					elements.grade.html('');
 					for(var i=0; i<fields.length; i++) {
-						elements.grade.append('<div class="szfb_option_wrapper"><a href="#" class="szfb_option szfb_score_' + (fields[i]+1) + '" style="background-image:url(sprites/' + _o.type + '.png); background-position:' + (-(fields[i]*28)) + 'px 0">' + (fields[i]+1) + '/5</a></div>');
+						elements.grade.append('<div class="szfb_option_wrapper"><a href="#" class="szfb_option szfb_score_' + (fields[i]+1) + '" style="background-image:url(' + config.src + '/sprites/' + _o.type + '.png); background-position:' + (-(fields[i]*28)) + 'px 0">' + (fields[i]+1) + '/5</a></div>');
 					}
 
 					// Hover-effekt på options

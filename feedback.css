@@ -1,21 +1,7 @@
-html {
-	background-color:#eee;
-}
-
-body {
-	width:800px;
-	margin:50px auto;
-	width:750px;
-	font-family:Arial, sans-serif;
-	background-color:white;
-	padding:50px;
-}
-
 #szfb_container {
 	width:250px;
 	font-size:13px;
 	font-family:Arial;
-	display:none;
 }
 
 #szfb_tabbar {
