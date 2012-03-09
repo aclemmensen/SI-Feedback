@@ -10,7 +10,7 @@ szfbjQuery.noConflict();
 (function($, undefined) {
 
 	if(window['_sz'] == undefined) {
-		console.log('siteanalyze_ng not loaded');
+		_sz.util.log('siteanalyze_ng not loaded');
 		return false;
 	}
 
@@ -25,7 +25,9 @@ szfbjQuery.noConflict();
 			preset: {
 				type: 'smiley',
 				count: 5,
-				style: 'red'
+				style: 'red',
+				reversed: true,
+				highlightRange: true
 			},
 			font: {
 				name: 'Arial',
@@ -90,7 +92,7 @@ szfbjQuery.noConflict();
 			for(var i=0; i<_opts.length; i++) {
 				if(_opts[i].matches.force || (this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude))) {
 					opts = _opts[i];
-					console.log('showing feedback');
+					_sz.util.log('showing feedback');
 					return true;
 				}
 			}
@@ -101,6 +103,11 @@ szfbjQuery.noConflict();
 	var config = {
 		src: 'http://ac.givetwise.dk/siteanalyze_fb'
 	};
+
+	var response = {
+		grade: null,
+		comment: null
+	}
 
 	// Hvis surveyet skal vises sæt document.ready op.
 	if(matcher.show()) {
@@ -296,15 +303,18 @@ szfbjQuery.noConflict();
 					// Fjern eventuel skala, opret ny
 					elements.grade.html('');
 					for(var i=0; i<fields.length; i++) {
-						elements.grade.append('<div class="szfb_option_wrapper"><a href="#" class="szfb_option szfb_score_' + (fields[i]+1) + '" style="background-image:url(' + config.src + '/sprites/' + _o.type + '.png); background-position:' + (-(fields[i]*28)) + 'px 0">' + (fields[i]+1) + '/5</a></div>');
+						var score = (!opts.layout.preset.reversed) ? fields[i]+1 : fields[fields.length-i-1]+1;
+						elements.grade.append('<div class="szfb_option_wrapper"><a href="#" class="szfb_option szfb_score_' + (fields[i]+1) + '" style="background-image:url(' + config.src + '/sprites/' + _o.type + '.png);">' + score + '</a></div>');
 					}
 
 					// Hover-effekt på options
 					// TODO: Stjerner har anderledes hover-state
 					elements.options = elements.grade.find('.szfb_option');
 					elements.options.click(function() {
-						elements.grade.find('div, a').removeClass('szfb_selected');
-						$(this).add($(this).parent()).addClass('szfb_selected');
+						var $this = $(this);
+						$this.parent().addClass('szfb_selected').siblings().removeClass('szfb_selected szfb_range');
+						if(_o.highlightRange) $this.parent().prevAll().addClass('szfb_range');
+						response.grade = $this.text();
 						return false;
 					});
 
@@ -463,9 +473,10 @@ szfbjQuery.noConflict();
 
 
 			function handlesubmit() {
-				//console.log('... submitting');
+				//_sz.util.log('... submitting');
+				_sz.util.log('grade: ' + response.grade);
 				state.set('complete');
-				console.log(_sz.opts.szfbid);
+				_sz.util.log(_sz.opts.szfbid);
 				return false;
 			}
 

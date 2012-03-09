@@ -114,7 +114,7 @@
 	margin:0 5px;
 }
 
-.szfb_option_wrapper:hover, .szfb_option_wrapper.szfb_selected {
+.szfb_option_wrapper.szfb_selected {
 	background:url('gfx/arrow.png') no-repeat 50% 100%;
 }
 
@@ -136,11 +136,17 @@
 	display:block;
 }
 
-.szfb_score_1.szfb_selected, .szfb_score_1:hover { background-position:     0 -28px !important; }
-.szfb_score_2.szfb_selected, .szfb_score_2:hover { background-position: -28px -28px !important; }
-.szfb_score_3.szfb_selected, .szfb_score_3:hover { background-position: -56px -28px !important; }
-.szfb_score_4.szfb_selected, .szfb_score_4:hover { background-position: -84px -28px !important; }
-.szfb_score_5.szfb_selected, .szfb_score_5:hover { background-position:-112px -28px !important; }
+.szfb_score_1 { background-position:      0 0 }
+.szfb_score_2 { background-position:  -28px 0 }
+.szfb_score_3 { background-position:  -56px 0 }
+.szfb_score_4 { background-position:  -84px 0 }
+.szfb_score_5 { background-position: -112px 0 }
+
+.szfb_selected .szfb_score_1, .szfb_range .szfb_score_1, .szfb_score_1:hover { background-position:     0 -28px; }
+.szfb_selected .szfb_score_2, .szfb_range .szfb_score_2, .szfb_score_2:hover { background-position: -28px -28px; }
+.szfb_selected .szfb_score_3, .szfb_range .szfb_score_3, .szfb_score_3:hover { background-position: -56px -28px; }
+.szfb_selected .szfb_score_4, .szfb_range .szfb_score_4, .szfb_score_4:hover { background-position: -84px -28px; }
+.szfb_selected .szfb_score_5, .szfb_range .szfb_score_5, .szfb_score_5:hover { background-position:-112px -28px; }
 
 #szfb_thanks {
 	text-align:center;
