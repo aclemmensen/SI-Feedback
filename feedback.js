@@ -42,13 +42,13 @@ szfbjQuery.noConflict();
 		texts: {
 			title: "Feedback",
 			question: "Hvad synes du?",
+			comment: "Skriv en kommentar",
 			button: "Send feedback",
 			hide: "Skjul",
 			confirmation: "Tusind tak for dit svar",
 			close: "Luk",
 			errors: {
-				grade: "Besvar venligst spg",
-				comment: "Skriv venligst en kommentar",
+				grade: "Besvar venligst spørgsmålet",
 				commit: "Der opstod en fejl..."
 			}
 		},
@@ -130,6 +130,7 @@ szfbjQuery.noConflict();
 				options   : null,
 				form      : $('#szfb_form', _e),
 				comment   : $('#szfb_comment', _e),
+				comment_ta: $('#szfb_comment_ta', _e),
 				submit    : $('#szfb_submit', _e),
 				thanks    : $('#szfb_thanks', _e)
 			};
@@ -411,7 +412,20 @@ szfbjQuery.noConflict();
 					elements.toggle.text(opts.texts.title);
 					elements.question.text(opts.texts.question);
 					elements.submit.text(opts.texts.button);
+					elements.comment_ta.val(opts.texts.comment);
 
+					elements.comment_ta.focus(function() {
+						if($(this).val() == opts.texts.comment) {
+							$(this).val('');
+						}
+						$(this).addClass('szfb_focus');
+					});
+
+					elements.comment_ta.blur(function() {
+						if($(this).val() == '') {
+							$(this).val(opts.texts.comment).removeClass('szfb_focus');
+						}
+					});
 
 					// Vis boks
 					elements.container.show();
