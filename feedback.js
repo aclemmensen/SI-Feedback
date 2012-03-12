@@ -308,16 +308,17 @@ szfbjQuery.noConflict();
 					}
 
 					// Hover-effekt på options
-					// TODO: Stjerner har anderledes hover-state
+					elements.grade.unbind('mouseleave');
 					elements.options = elements.grade.find('.szfb_option');
 					elements.options.click(function() {
 						var $this = $(this);
 
 						$this
-							.parent().addClass('szfb_selected')
-							.siblings().removeClass('szfb_selected szfb_range');
+							.parent().addClass('szfb_range szfb_selected')
+							.siblings().removeClass('szfb_range szfb_selected');
 
-						if(_o.highlightRange) $this.parent().prevAll().addClass('szfb_range');
+						if(_o.highlightRange)
+							$this.parent().prevAll().addClass('szfb_range');
 
 						response.grade = $this.text();
 						return false;
@@ -325,11 +326,12 @@ szfbjQuery.noConflict();
 
 					if(_o.highlightRange) {
 						elements.options.mouseenter(function() {
-							$(this).parent().removeClass('szfb_range').prevAll().addClass('szfb_range');//.nextAll().removeClass('szfb_range');
+							$(this).parent().siblings().removeClass('szfb_range');
+							$(this).parent().prevAll().andSelf().addClass('szfb_range');
 						});
 						elements.grade.mouseleave(function() {
 							$(this).find('.szfb_range').removeClass('szfb_range');
-							$(this).find('.szfb_selected').prevAll().addClass('szfb_range');
+							$(this).find('.szfb_selected').addClass('szfb_range').prevAll().addClass('szfb_range');
 						});
 					}
 

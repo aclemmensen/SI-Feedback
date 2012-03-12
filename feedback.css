@@ -142,11 +142,11 @@
 .szfb_score_4 { background-position:  -84px 0 }
 .szfb_score_5 { background-position: -112px 0 }
 
-.szfb_selected .szfb_score_1, .szfb_range .szfb_score_1, .szfb_score_1:hover { background-position:     0 -28px; }
-.szfb_selected .szfb_score_2, .szfb_range .szfb_score_2, .szfb_score_2:hover { background-position: -28px -28px; }
-.szfb_selected .szfb_score_3, .szfb_range .szfb_score_3, .szfb_score_3:hover { background-position: -56px -28px; }
-.szfb_selected .szfb_score_4, .szfb_range .szfb_score_4, .szfb_score_4:hover { background-position: -84px -28px; }
-.szfb_selected .szfb_score_5, .szfb_range .szfb_score_5, .szfb_score_5:hover { background-position:-112px -28px; }
+.szfb_range .szfb_score_1 { background-position:     0 -28px; }
+.szfb_range .szfb_score_2 { background-position: -28px -28px; }
+.szfb_range .szfb_score_3 { background-position: -56px -28px; }
+.szfb_range .szfb_score_4 { background-position: -84px -28px; }
+.szfb_range .szfb_score_5 { background-position:-112px -28px; }
 
 #szfb_thanks {
 	text-align:center;
