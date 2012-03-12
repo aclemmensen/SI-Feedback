@@ -29,6 +29,7 @@
 				$('#c_count').val(t.layout.preset.count);
 				$('#c_comment').attr('checked', t.layout.comment);
 				$('#c_fontsize').val(t.layout.font.size);
+				$('#c_br').val(t.layout.corners);
 
 				$('#customize input, #customize select').bind('change', function() {
 					var t = _szfb.getopts();
@@ -38,6 +39,7 @@
 					t.layout.position = $('#c_position').val();
 					t.layout.font.name = $('#c_font').val();
 					t.layout.font.size = $('#c_fontsize').val();
+					t.layout.corners = $('#c_br').val();
 					_szfb.reload(t);
 				});
 
@@ -62,30 +64,6 @@
 		</script>
 	</head>
 	<body>
-
-		<!--
-		<div id="szfb_container">
-			<div id="szfb_tabbar">
-				<a id="szfb_toggle" href="#"></a>
-			</div>
-			<div id="szfb_content">
-				<div id="szfb_inner" style="display:none;">
-					<p id="szfb_thanks" style="display:none;"></p>
-					<form id="szfb_form" method="post" action="submit.php">
-						<label id="szfb_question" for="szfb_comment_ta"></label>
-						<div id="szfb_grade">&nbsp;</div>
-						<div id="szfb_response"></div>
-						<div id="szfb_comment" style="display:none;">
-							<textarea id="szfb_comment_ta"></textarea>
-						</div>
-						<div id="szfb_formaction">
-							<a href="#" id="szfb_submit"></a>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		-->
 
 		<form id="customize">
 			<h2>Options</h2>
@@ -113,6 +91,9 @@
 
 			<label for="c_count">Count</label>
 			<input type="text" name="count" id="c_count" class="c" /><br />
+
+			<label for="c_br">Border radius</label>
+			<input type="text" name="br" id="c_br" /><br />
 
 			<label for="c_comment">Comments?</label>
 			<input type="checkbox" name="comments" id="c_comment" /><br />
