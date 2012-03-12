@@ -101,7 +101,9 @@ szfbjQuery.noConflict();
 	};
 
 	var config = {
-		src: 'http://ac.givetwise.dk/siteanalyze_fb'
+		src: 'http://ac.givetwise.dk/siteanalyze_fb',
+		endpoint: 'http://ac.givetwise.dk/siteanalyze_fb/commit.php',
+		sent: false
 	};
 
 	var response = {
@@ -512,9 +514,14 @@ szfbjQuery.noConflict();
 
 				elements.grade_err.hide();
 
-				_sz.util.log('grade: ' + response.grade);
+				response.comment = elements.comment_ta.val();
+				$.post(config.endpoint, response, function(r) {
+					config.sent = true;
+					state.set('complete');
+				});
+
+				// Dummy
 				state.set('complete');
-				_sz.util.log(_sz.opts.szfbid);
 
 				return false;
 			}
