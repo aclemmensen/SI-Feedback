@@ -115,7 +115,7 @@ szfbjQuery.noConflict();
 
 			$('head').append('<link rel="stylesheet" href="' + config.src + '/feedback.css" />');
 
-			var _e = $('<div id="szfb_container"><div id="szfb_tabbar"><a id="szfb_toggle" href="#"></a></div><div id="szfb_content"><div id="szfb_inner" style="display:none;"><p id="szfb_thanks" style="display:none;"></p><form id="szfb_form" method="post" action="submit.php"><label id="szfb_question" for="szfb_comment_ta"></label><div id="szfb_grade">&nbsp;</div><div id="szfb_response"></div><div id="szfb_comment" style="display:none;"><textarea id="szfb_comment_ta"></textarea></div><div id="szfb_formaction"><a href="#" id="szfb_submit"></a></div></form></div></div></div>');
+			var _e = $('<div id="szfb_container"><div id="szfb_tabbar"><a id="szfb_toggle" href="#"></a></div><div id="szfb_content"><div id="szfb_inner" style="display:none;"><p id="szfb_thanks" style="display:none;"></p><form id="szfb_form" method="post" action="submit.php"><label id="szfb_question" for="szfb_comment_ta"></label><div id="szfb_grade">&nbsp;</div><div id="szfb_response"></div><div id="szfb_comment" style="display:none;"><p id="szfb_grade_err" style="display:none;"></p><textarea id="szfb_comment_ta"></textarea></div><div id="szfb_formaction"><a href="#" id="szfb_submit"></a></div></form></div></div></div>');
 
 			$('body').append(_e);
 
@@ -127,6 +127,7 @@ szfbjQuery.noConflict();
 				inner     : $('#szfb_inner', _e),
 				question  : $('#szfb_question', _e),
 				grade     : $('#szfb_grade', _e),
+				grade_err : $('#szfb_grade_err', _e),
 				options   : null,
 				form      : $('#szfb_form', _e),
 				comment   : $('#szfb_comment', _e),
@@ -413,6 +414,7 @@ szfbjQuery.noConflict();
 					elements.question.text(opts.texts.question);
 					elements.submit.text(opts.texts.button);
 					elements.comment_ta.val(opts.texts.comment);
+					elements.grade_err.text(opts.texts.errors.grade).hide();
 
 					elements.comment_ta.focus(function() {
 						if($(this).val() == opts.texts.comment) {
@@ -449,15 +451,12 @@ szfbjQuery.noConflict();
 					self.pos.show(function() { elements.toggle.text(opts.texts.close); });
 				}
 
-				this.invalid = function() {
-
-				}
-
 				this.complete = function() {
 					elements.container.show();
 					elements.inner.show();
 					self.pos.show();
 					elements.thanks.text(opts.texts.confirmation).show();
+					elements.comment_ta.val(opts.texts.comment);
 					elements.form.hide();
 					elements.toggle.text(opts.texts.hide);
 
@@ -467,7 +466,6 @@ szfbjQuery.noConflict();
 				this.hide = function() {
 					self.pos.hide(function() {
 						elements.toggle.text(opts.texts.title);
-						elements.comment.val('');
 						elements.form.show();
 						elements.thanks.hide();
 					});
@@ -507,9 +505,17 @@ szfbjQuery.noConflict();
 
 			function handlesubmit() {
 				//_sz.util.log('... submitting');
+				if(response.grade == null) {
+					elements.grade_err.show();
+					return false;
+				}
+
+				elements.grade_err.hide();
+
 				_sz.util.log('grade: ' + response.grade);
 				state.set('complete');
 				_sz.util.log(_sz.opts.szfbid);
+
 				return false;
 			}
 
