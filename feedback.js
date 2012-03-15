@@ -9,11 +9,6 @@ szfbjQuery.noConflict();
 
 (function($, undefined) {
 
-	if(window['_sz'] == undefined) {
-		console.log('siteanalyze_ng not loaded');
-		return false;
-	}
-
 	var defaults = {
 		layout: {
 			width: 250,
@@ -92,7 +87,6 @@ szfbjQuery.noConflict();
 			for(var i=0; i<_opts.length; i++) {
 				if(_opts[i].matches.force || (this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude))) {
 					opts = _opts[i];
-					_sz.util.log('showing feedback');
 					return true;
 				}
 			}
@@ -506,7 +500,6 @@ szfbjQuery.noConflict();
 
 
 			function handlesubmit() {
-				//_sz.util.log('... submitting');
 				if(response.grade == null) {
 					elements.grade_err.show();
 					return false;
@@ -550,7 +543,8 @@ szfbjQuery.noConflict();
 				}
 			};
 
-			_sz.internal.callback('feedback');
+			if(window['_sz'] !== undefined)
+				_sz.internal.callback('feedback');
 
 		});
 	} else {

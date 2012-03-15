@@ -17,49 +17,54 @@
 				padding:50px;
 			}
 		</style>
+		<script src="http://ac.givetwise.dk/siteanalyze_fb/feedback.js"></script>
 		<script type="text/javascript">
 
-		var _sz = _sz || [];
+		/*var _sz = _sz || [];
 		_sz.push(['accountid', '263883']);
 		_sz.push(['feedback', null]);
-		_sz.push(['callback', 'feedback', function() {
+		_sz.push(['callback', 'feedback', function() {*/
 			(function($) {
-				var t = _szfb.getopts();
-				$('#c_color').val(t.layout.colors.background);
-				$('#c_count').val(t.layout.preset.count);
-				$('#c_comment').attr('checked', t.layout.comment);
-				$('#c_fontsize').val(t.layout.font.size);
-				$('#c_br').val(t.layout.corners);
-
-				$('#customize input, #customize select').bind('change', function() {
+				$(function() {
 					var t = _szfb.getopts();
-					t.layout.colors.background = $('#c_color').val();
-					t.layout.preset.count = $('#c_count').val();
-					t.layout.comment = $('#c_comment').is(':checked');
-					t.layout.position = $('#c_position').val();
-					t.layout.font.name = $('#c_font').val();
-					t.layout.font.size = $('#c_fontsize').val();
-					t.layout.corners = $('#c_br').val();
-					_szfb.reload(t);
-				});
+					$('#c_color').val(t.layout.colors.background);
+					$('#c_count').val(t.layout.preset.count);
+					$('#c_comment').attr('checked', t.layout.comment);
+					$('#c_fontsize').val(t.layout.font.size);
+					$('#c_br').val(t.layout.corners);
 
-				$('#state input[type="button"]').click(function() {
-					_szfb.setstate($(this).val());
-				});
+					$('#customize input, #customize select').bind('change', function() {
+						var t = _szfb.getopts();
+						t.layout.colors.background = $('#c_color').val();
+						t.layout.preset.count = $('#c_count').val();
+						t.layout.comment = $('#c_comment').is(':checked');
+						t.layout.position = $('#c_position').val();
+						t.layout.font.name = $('#c_font').val();
+						t.layout.font.size = $('#c_fontsize').val();
+						t.layout.corners = $('#c_br').val();
+						_szfb.reload(t);
+					});
 
-				$('.t_color').click(function() {
-					var t = _szfb.getopts();
-					t.layout.colors.text = $(this).val();
-					_szfb.reload(t);
+					$('#state input[type="button"]').click(function() {
+						_szfb.setstate($(this).val());
+					});
+
+					$('.t_color').click(function() {
+						var t = _szfb.getopts();
+						t.layout.colors.text = $(this).val();
+						_szfb.reload(t);
+					});
 				});
 			})(szfbjQuery);
-		}]);
+		//}]);
 
+		/*
 		(function() {
 			var sz = document.createElement('script'); sz.type = 'text/javascript'; sz.async = true;
 			sz.src = 'http://ac.givetwise.dk/siteanalyze_ng/siteanalyze_ng.js';
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sz, s);
 		})();
+		*/
 
 		</script>
 	</head>
@@ -100,8 +105,8 @@
 
 			<label for="c_position">Position</label>
 			<select name="position" id="c_position">
-				<option value="E">East</option>
-				<option value="SE" selected>South-East</option>
+				<option value="E" selected>East</option>
+				<option value="SE">South-East</option>
 				<option value="S">South</option>
 				<option value="SW">South-West</option>
 				<option value="W">West</option>
