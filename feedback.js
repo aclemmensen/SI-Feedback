@@ -33,7 +33,8 @@ szfbjQuery.noConflict();
 			width: 250, // bredde på indtastningsfelt
 			corners: 8, // border radius
 			comment: true, // vis kommentarfelt?
-			position: 'E', // E, SE, S, SW, W
+			position: 'W', // E, SE, S, SW, W
+			anim: true, // brug animation ved vis/skjul?
 			anim_duration: 300, // msec for op/ned/skjul
 			preset: {
 				type: 'stars', // navn på sprite (smiley, thumbs, thumbs2, janej, numbers, stars
@@ -150,11 +151,21 @@ szfbjQuery.noConflict();
 			};
 
 			function hide(complete) {
-				elements.inner.slideUp(opts.layout.anim_duration, complete);
+				if(opts.layout.anim) {
+					elements.inner.slideUp(opts.layout.anim_duration, complete);
+				} else {
+					elements.inner.hide();
+					if(complete !== undefined) complete();
+				}
 			}
 
 			function show(complete) {
-				elements.inner.slideDown(opts.layout.anim_duration, complete);
+				if(opts.layout.anim) {
+					elements.inner.slideDown(opts.layout.anim_duration, complete);
+				} else {
+					elements.inner.show();
+					if(complete !== undefined) complete();
+				}
 			}
 
 			var positions = {
@@ -173,14 +184,25 @@ szfbjQuery.noConflict();
 						elements.inner.show();
 						elements.container
 							.show()
-							.css({left: 'auto'})
-							.animate({right: 0}, { duration: opts.layout.anim_duration, complete: complete });
+							.css({left: 'auto'});
+						if(opts.layout.anim) {
+							elements.container.animate({right: 0}, { duration: opts.layout.anim_duration, complete: complete });
+						} else {
+							elements.container.css({right: 0});
+							if(complete !== undefined) complete();
+						}
 					},
 					hide: function(complete) {
 						elements.container
 							.show()
-							.css({left: 'auto' })
-							.animate({ right: -(opts.layout.width-8)}, { duration: opts.layout.anim_duration, complete: complete });
+							.css({left: 'auto' });
+							var newpos = { right: -(opts.layout.width-8)};
+							if(opts.layout.anim) {
+								elements.container.animate(newpos, { duration: opts.layout.anim_duration, complete: complete });
+							} else {
+								elements.container.css(newpos);
+								if(complete !== undefined) complete();
+							}
 					},
 					name: 'e', 
 					recalc: function() {
@@ -205,14 +227,24 @@ szfbjQuery.noConflict();
 						elements.inner.show();
 						elements.container
 							.show()
-							.css({right: 'auto'})
-							.animate({left: 0}, { duration: opts.layout.anim_duration, complete: complete });
+							.css({right: 'auto'});
+						var newpos = {left: 0};
+						if(opts.layout.anim) {
+							elements.container.animate(newpos, { duration: opts.layout.anim_duration, complete: complete });
+						} else {
+							elements.container.css(newpos); if(complete !== undefined) complete();
+						}
 					},
 					hide: function(complete) {
 						elements.container
 							.show()
-							.css({right: 'auto'})
-							.animate({ left: -(opts.layout.width-8) }, { duration: opts.layout.anim_duration, complete: complete });
+							.css({right: 'auto'});
+						var newpos = { left: -(opts.layout.width-8) };
+						if(opts.layout.anim) {
+							elements.container.animate(newpos, { duration: opts.layout.anim_duration, complete: complete });
+						} else {
+							elements.container.css(newpos); if(complete !== undefined) complete();
+						}
 					},
 					name: 'w', 
 					recalc: function() {
