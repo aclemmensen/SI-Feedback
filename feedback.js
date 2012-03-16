@@ -11,27 +11,24 @@ szfbjQuery.noConflict();
 
 	var defaults = {
 		layout: {
-			width: 250,
-			corners: 8,
-			comment: true,
-			commentRequired: false,
-			position: 'E',
-			anim_duration: 300,
+			width: 250, // bredde på indtastningsfelt
+			corners: 8, // border radius
+			comment: true, // vis kommentarfelt?
+			position: 'E', // E, SE, S, SW, W
+			anim_duration: 300, // msec for op/ned/skjul
 			preset: {
-				type: 'stars',
-				count: 5,
-				style: 'red',
-				reversed: true,
-				highlightRange: true
+				type: 'stars', // navn på sprite (smiley, thumbs, thumbs2, janej, numbers, stars
+				count: 5, // antal grades. 5, 3 eller 2
+				reversed: true, // false: negativ -> positiv. true: positiv -> negativ
+				highlightRange: true // highlight foregående grades (bruges af: stjerner)
 			},
 			font: {
 				name: 'Arial',
-				size: '12'
+				size: '12' // i px
 			},
 			colors: {
-				background: '#ca0000',
-				text: 'white',
-				error: '#ca0000'
+				background: '#ca0000', // hex eller farvenavn
+				text: 'white' // white/black
 			}
 		},
 		texts: {
@@ -49,7 +46,7 @@ szfbjQuery.noConflict();
 		},
 		matches: {
 			include: [
-				{ s: 'horsens', e: false },
+				{ s: 'horsens', e: false }, // s: string til match, e: exact match? (bool)
 				{ s: 'klima.horsens.dk/hest', e: true },
 				{ s: 'home', e: false },
 				{ s: 'Dropbox', e: false },
@@ -58,7 +55,7 @@ szfbjQuery.noConflict();
 			exclude: [
 				{ s: 'klima.horsens.dk', e: false }
 			],
-			force: true
+			force: true // tving visning, uanset include/exclude
 		}
 	};
 
