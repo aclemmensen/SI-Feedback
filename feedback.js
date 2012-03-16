@@ -101,6 +101,7 @@ szfbjQuery.noConflict();
 	};
 
 	var response = {
+		szfbid: null,
 		grade: null,
 		comment: null
 	}
@@ -506,6 +507,10 @@ szfbjQuery.noConflict();
 				}
 
 				elements.grade_err.hide();
+
+				if(window['_sz'] !== undefined) {
+					response.szfbid = _sz.opts.szfbid;
+				}
 
 				response.comment = elements.comment_ta.val();
 				$.post(config.endpoint, response, function(r) {
