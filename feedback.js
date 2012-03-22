@@ -566,7 +566,7 @@ szfbjQuery.noConflict();
 					elements.form.hide();
 					elements.toggle.text(opts.texts.hide);
 
-					window.setTimeout(function() { if(self.get() == 'complete') self.set('hide'); }, 3000);
+					if(opts.layout.anim) window.setTimeout(function() { if(self.get() == 'complete') self.set('hide'); }, 3000);
 				}
 
 				this.hide = function() {
