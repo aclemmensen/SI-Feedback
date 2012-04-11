@@ -100,7 +100,7 @@ szfbjQuery.noConflict();
 			preset: {
 				type: 'stars', // navn på sprite (smiley, thumbs, thumbs2, janej, numbers, stars
 				count: 5, // antal grades. 5, 3 eller 2
-				reversed: true, // false: negativ -> positiv. true: positiv -> negativ
+				reversed: false, // false: negativ -> positiv. true: positiv -> negativ
 				highlightRange: true // highlight foregående grades (bruges af: stjerner)
 			},
 			font: {
@@ -174,14 +174,16 @@ szfbjQuery.noConflict();
 
 	var config = {
 		src: 'http://ac.givetwise.dk/siteanalyze_fb',
-		endpoint: 'http://ac.givetwise.dk/siteanalyze_fb/commit.php',
+		endpoint: 'http://szsurvey.siteimprove.com/survey/respond.aspx',
 		sent: false
 	};
 
 	var response = {
 		szfbid: null,
-		grade: null,
-		comment: null
+		smiley: null,
+		comment: null,
+		accountid: null,
+		url: window.location
 	}
 
 	// Hvis surveyet skal vises sæt document.ready op.
@@ -428,7 +430,7 @@ szfbjQuery.noConflict();
 						if(_o.highlightRange)
 							$this.parent().prevAll().addClass('szfb_range');
 
-						response.grade = $this.text();
+						response.smiley = $this.text();
 						return false;
 					});
 
@@ -610,24 +612,32 @@ szfbjQuery.noConflict();
 
 
 			function handlesubmit() {
-				if(response.grade == null) {
+				if(response.smiley == null) {
 					elements.grade_err.show();
 					return false;
 				}
 
 				elements.grade_err.hide();
 
-				if(window['_sz'] !== undefined) {
-					response.szfbid = _sz.opts.szfbid;
+				if(window['_sz'] !== undefined && _sz['opts'] !== undefined) {
+					response.szfbid    = _sz.opts.szfbid;
+					response.accountid = _sz.opts.accountid;
 				}
 
-				response.comment = elements.comment_ta.val();
-				$.post(config.endpoint, response, function(r) {
-					config.sent = true;
-					state.set('complete');
-				});
+				response.comment = (elements.comment_ta.val() != opts.texts.comment)
+					? elements.comment_ta.val()
+					: null;
 
-				// Dummy
+				var parts = [];
+				for(var e in response) {
+					if(response[e] == null) continue;
+					parts.push(e + '=' + encodeURIComponent(response[e]));
+				}
+
+				// http://szsurvey.siteimprove.com/survey/respond.aspx?smiley=3&comment=fttest&url=http%3A//www.horsens.dk/&account_id=265393&feedback_id=1&luid=4abe5a259ca472593a24e11376a625d9&rt=img
+				var img = new Image();
+				img.src = config.endpoint + '?' + parts.join('&') + '&rt=img';
+
 				state.set('complete');
 
 				return false;
