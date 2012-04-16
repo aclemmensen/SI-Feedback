@@ -94,32 +94,32 @@ szfbjQuery.noConflict();
 			width: 250, // bredde på indtastningsfelt
 			corners: 8, // border radius
 			comment: true, // vis kommentarfelt?
-			position: 'W', // E, SE, S, SW, W
+			position: 'SE', // E, SE, S, SW, W
 			anim: true, // brug animation ved vis/skjul?
 			anim_duration: 300, // msec for op/ned/skjul
 			preset: {
-				type: 'stars', // navn på sprite (smiley, thumbs, thumbs2, janej, numbers, stars
+				type: 'smiley', // navn på sprite (smiley, thumbs, thumbs2, janej, numbers, stars
 				count: 5, // antal grades. 5, 3 eller 2
 				reversed: false, // false: negativ -> positiv. true: positiv -> negativ
-				highlightRange: true // highlight foregående grades (bruges af: stjerner)
+				highlightRange: false // highlight foregående grades (bruges af: stjerner)
 			},
 			font: {
 				name: 'Arial',
 				size: '12' // i px
 			},
 			colors: {
-				background: '#ca0000', // hex eller farvenavn
+				background: '#E4312A', // hex eller farvenavn
 				text: 'white' // white/black
 			}
 		},
 		texts: {
-			title: "Feedback",
-			question: "Hvad synes du?",
-			comment: "Skriv en kommentar",
+			title: "Hvad synes du om denne side?",
+			question: "Hvad synes du om denne side?",
+			comment: "Hvis du skriver en kommentar, hjælper du os med at gøre denne side bedre.",
 			button: "Send feedback",
 			hide: "Skjul",
 			confirmation: "Tusind tak for dit svar",
-			close: "Luk",
+			close: "Skjul",
 			errors: {
 				grade: "Besvar venligst spørgsmålet",
 				commit: "Der opstod en fejl..."
@@ -183,7 +183,8 @@ szfbjQuery.noConflict();
 		smiley: null,
 		comment: null,
 		accountid: null,
-		url: window.location
+		url: window.location,
+		feedbackid: null
 	}
 
 	// Hvis surveyet skal vises sæt document.ready op.
@@ -649,12 +650,12 @@ szfbjQuery.noConflict();
 			state.set('init');
 
 			// Link-hack mens i udvikling.
-			try {
+			/*try {
 				$('a').each(function() {
 					var href = $(this).attr('href');
 					$(this).attr('href', href + ((href.indexOf('?') > -1) ? '&' : '?') + 'actest=' + Date.now());
 				});
-			} catch(e) { }
+			} catch(e) { }*/
 
 			_szfb = {
 				reload: function(new_opts) {
