@@ -21,6 +21,7 @@
 	text-decoration:none;
 	font-weight:bold;
 	font-size:90%;
+	outline:0;
 }
 
 #szfb_content {
@@ -150,6 +151,7 @@
 	height:28px;
 	text-indent:-9999px;
 	display:block;
+	outline:0;
 }
 
 .szfb_score_1 { background-position:      0 0 }
