@@ -17,7 +17,7 @@
  * for ideelt bør alle config objekter indeholde samtlige konfigurations-
  * data.
  */
-var _szfb_config = [{}]; // Array til config-objekter fra backend
+var _szfb_config = _szfb_config || [{}]; // Array til config-objekter fra backend
 var _szfb = { };         // Placeholder for globalt objekt
 
 /**
