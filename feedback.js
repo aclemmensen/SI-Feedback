@@ -127,14 +127,14 @@ szfbjQuery.noConflict();
 		},
 		matches: {
 			include: [
-				{ s: 'horsens', e: false }, // s: string til match, e: exact match? (bool)
-				{ s: 'klima.horsens.dk/hest', e: true },
-				{ s: 'home', e: false },
-				{ s: 'Dropbox', e: false },
-				{ s: 'givetwise', e: false }
+				{ s: 'horsens', m: 1 }, // s: string til match, m: match mode (1: contains, 2: starts with, 3: ends with, 4: exact)
+				{ s: 'klima.horsens.dk/hest', m: 1 },
+				{ s: 'home', m: 1 },
+				{ s: 'Dropbox', m: 1 },
+				{ s: 'test.html', m: 3 }
 			],
 			exclude: [
-				{ s: 'klima.horsens.dk', e: false }
+				{ s: 'klima.horsens.dk', m: 1 }
 			],
 			force: true // tving visning, uanset include/exclude
 		}
@@ -150,9 +150,12 @@ szfbjQuery.noConflict();
 	var matcher = {
 		loc: window.location.toString(),
 		check_url: function(url) {
-			return (url.e == true) 
-				? this.loc == url.s
-				: this.loc.indexOf(url.s) > -1
+			switch(url.m) {
+				case 1: return this.loc.indexOf(url.s) > -1; // contains
+				case 2: return this.loc.indexOf(url.s) == 0; // starts with
+				case 3: return (this.loc.indexOf(url.s) + url.s.length) == this.loc.length; // ends with
+				case 4: return this.loc == url.s; // exact
+			}
 		},
 		check_list: function(list) {
 			for(var i=0; i<list.length; i++) {
