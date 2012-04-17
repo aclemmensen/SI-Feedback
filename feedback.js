@@ -670,6 +670,9 @@ szfbjQuery.noConflict();
 				},
 				setstate: function(new_state) {
 					state.set(new_state);
+				},
+				getstate: function() {
+					return state.state;
 				}
 			};
 
