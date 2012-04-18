@@ -17,7 +17,7 @@
  * for ideelt bør alle config objekter indeholde samtlige konfigurations-
  * data.
  */
-var _szfb_config = _szfb_config || [{}]; // Array til config-objekter fra backend
+var _szfb_config = _szfb_config || []; // Array til config-objekter fra backend
 var _szfb = { };         // Placeholder for globalt objekt
 
 /**
@@ -143,13 +143,14 @@ szfbjQuery.noConflict();
 	// Merge default options med det, vi har fået fra SZ-scriptet
 	var _opts = [], opts = {};
 	for(var i=0; i<_szfb_config.length; i++) {
-		_opts[i] = $.extend(defaults, _szfb_config[i]);
+		_opts[i] = _szfb_config[i];
 	}
 
 	// Matcher-namespace. Undersøger, om survey'et skal vises på denne side.
 	var matcher = {
 		loc: window.location.toString(),
 		check_url: function(url) {
+			//console.log("Checking %s, mode %d", url.s, url.m);
 			switch(url.m) {
 				case 1: return this.loc.indexOf(url.s) > -1; // contains
 				case 2: return this.loc.indexOf(url.s) == 0; // starts with
@@ -169,6 +170,8 @@ szfbjQuery.noConflict();
 				if(_opts[i].matches.force || (this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude))) {
 					opts = _opts[i];
 					return true;
+				} else {
+					//console.log("Not showing");
 				}
 			}
 			return false;
