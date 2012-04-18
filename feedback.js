@@ -181,7 +181,7 @@ szfbjQuery.noConflict();
 
 	var config = {
 		src: '//ssl.siteimprove.com/js/feedback',
-		endpoint: 'http://szsurvey.siteimprove.com/survey/respond.aspx',
+		endpoint: '//szsurvey.siteimprove.com/survey/respond.aspx',
 		sent: false
 	};
 
