@@ -179,7 +179,7 @@ szfbjQuery.noConflict();
 	};
 
 	var config = {
-		src: 'http://ac.givetwise.dk/siteanalyze_fb',
+		src: '//ssl.siteimprove.com/js/feedback',
 		endpoint: 'http://szsurvey.siteimprove.com/survey/respond.aspx',
 		sent: false
 	};
