@@ -90,6 +90,7 @@ szfbjQuery.noConflict();
 (function($, undefined) {
 
 	var defaults = {
+		feedbackid: 1,
 		layout: {
 			width: 250, // bredde på indtastningsfelt
 			corners: 8, // border radius
@@ -630,6 +631,8 @@ szfbjQuery.noConflict();
 					response.szfbid    = _sz.opts.szfbid;
 					response.accountid = _sz.opts.accountid;
 				}
+
+				response.feedbackid = opts.feedbackid;
 
 				response.comment = (elements.comment_ta.val() != opts.texts.comment)
 					? elements.comment_ta.val()
