@@ -199,7 +199,11 @@ szfbjQuery.noConflict();
 	if(matcher.show()) {
 		$(function() {
 
-			$('head').append('<link rel="stylesheet" href="' + config.src + '/feedback.css" />');
+			if(document.createStyleSheet) {
+				document.createStyleSheet(config.src + '/feedback.css');
+			} else {
+				$('head').append('<link rel="stylesheet" href="' + config.src + '/feedback.css" />');
+			}
 
 			var _e = $('<div id="szfb_container"><div id="szfb_tabbar"><a id="szfb_toggle" href="#"></a></div><div id="szfb_content"><div id="szfb_inner" style="display:none;"><p id="szfb_thanks" style="display:none;"></p><form id="szfb_form" method="post" action="submit.php"><label id="szfb_question" for="szfb_comment_ta"></label><div id="szfb_grade">&nbsp;</div><div id="szfb_response"></div><div id="szfb_comment" style="display:none;"><p id="szfb_grade_err" style="display:none;"></p><textarea id="szfb_comment_ta"></textarea></div><div id="szfb_formaction"><a href="#" id="szfb_submit"></a></div></form></div></div></div>');
 
