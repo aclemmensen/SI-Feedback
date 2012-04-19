@@ -167,6 +167,7 @@ szfbjQuery.noConflict();
 		},
 		// Side effects: Sætter opts objekt
 		show: function() {
+			if(_opts.length == 0) _opts.push(defaults);
 			for(var i=0; i<_opts.length; i++) {
 				if(_opts[i].matches.force || (this.check_list(_opts[i].matches.include) && !this.check_list(_opts[i].matches.exclude))) {
 					opts = _opts[i];
