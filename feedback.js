@@ -128,16 +128,10 @@ szfbjQuery.noConflict();
 		},
 		matches: {
 			include: [
-				{ s: 'horsens', m: 1 }, // s: string til match, m: match mode (1: contains, 2: starts with, 3: ends with, 4: exact)
-				{ s: 'klima.horsens.dk/hest', m: 1 },
-				{ s: 'home', m: 1 },
-				{ s: 'Dropbox', m: 1 },
-				{ s: 'test.html', m: 3 }
+				{ s: 'siteimprove.com', m: 1 }
 			],
-			exclude: [
-				{ s: 'klima.horsens.dk', m: 1 }
-			],
-			force: true // tving visning, uanset include/exclude
+			exclude: [ ],
+			force: false // tving visning, uanset include/exclude
 		}
 	};
 
