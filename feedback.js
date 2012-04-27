@@ -114,6 +114,7 @@ szfbjQuery.noConflict();
 			}
 		},
 		texts: {
+			language: "da", // da, en, sv
 			title: "Hvad synes du om denne side?",
 			question: "Hvad synes du om denne side?",
 			comment: "Hvis du skriver en kommentar, hjælper du os med at gøre denne side bedre.",
@@ -238,11 +239,19 @@ szfbjQuery.noConflict();
 				}
 			}
 
+			// Helper: Use image instead of text for E and W positions
+			function textreplacement(useimage) {
+				(useimage)
+					? elements.toggle.css({'backgroundImage': 'url("' + config.src + '/gfx/' + opts.layout.colors.text + '_' + positions[opts.layout.position].name + '_' + opts.texts.language + '.png")'})
+					: elements.toggle.css({'backgroundImage': 'none'});
+			}
+
 			var positions = {
 				// EAST
 				E: { 
 					css: function() { 
 						elements.inner.show(); 
+						textreplacement(true);
 						return { 
 							right:  (-(opts.layout.width-8)) + 'px',
 							top:    ($(window).height()-elements.container.height())/2,
@@ -286,6 +295,7 @@ szfbjQuery.noConflict();
 				W: { 
 					css: function() { 
 						elements.inner.show();
+						textreplacement(true);
 						return { 
 							left:   (-(opts.layout.width-8)) + 'px',
 							top:    ($(window).height()-elements.container.height())/2,
@@ -328,6 +338,7 @@ szfbjQuery.noConflict();
 				S:  { 
 					css: function() { 
 						elements.inner.hide();
+						textreplacement(false);
 						return { 
 							left:   ($(window).width()-opts.layout.width)/2,
 							bottom: '0px', 
@@ -349,6 +360,7 @@ szfbjQuery.noConflict();
 				SE: { 
 					css: function() { 
 						elements.inner.hide();
+						textreplacement(false);
 						return { 
 							right:  '10px', 
 							bottom: '0px', 
@@ -366,6 +378,7 @@ szfbjQuery.noConflict();
 				SW: { 
 					css: function() { 
 						elements.inner.hide();
+						textreplacement(false);
 						return { 
 							left:   '10px', 
 							bottom: '0px', 
@@ -392,10 +405,12 @@ szfbjQuery.noConflict();
 				this.set = function(to) {
 					self.oldstate = self.state;
 					self.state = to;
+
 					if(self[to] !== undefined) {
+
 						elements.container
 							.removeClass()
-							.addClass('szfb_position_' + positions[opts.layout.position].name + ' szfb_textcolor_' + opts.layout.colors.text + ' szfb_state_' + to);
+							.addClass('szfb_position_' + positions[opts.layout.position].name + ' szfb_textcolor_' + opts.layout.colors.text + ' szfb_language_' + opts.texts.language + ' szfb_state_' + to);
 						self[to].call();
 					}
 				}
@@ -416,6 +431,9 @@ szfbjQuery.noConflict();
 					} else {
 						fields = [0,1,2,3,4];
 					}
+
+					// Brug dansk hvis sprog ikke er defineret
+					if(opts.texts['language'] == undefined || opts.texts.language == null) opts.texts.language = 'da';
 
 					// Fjern eventuel skala, opret ny
 					elements.grade.html('');
