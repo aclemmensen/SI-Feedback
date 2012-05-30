@@ -109,7 +109,7 @@ szfbjQuery.noConflict();
 				size: '12' // i px
 			},
 			colors: {
-				background: '#E4312A', // hex eller farvenavn
+				background: '#555', // hex eller farvenavn
 				text: 'white' // white/black
 			}
 		},

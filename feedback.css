@@ -2,11 +2,11 @@
 	width:250px;
 	font-size:13px;
 	font-family:Arial;
-	z-index:100;
+	z-index:9000;
 }
 
 #szfb_tabbar {
-	background:#ccc;
+	background:#555;
 	float:right;
 	padding:4px 8px;
 	border-radius:3px 3px 0 0;
@@ -26,7 +26,7 @@
 
 #szfb_content {
 	clear:both;
-	background:#ccc;
+	background:#555;
 	border-radius:3px 0 0 0;
 	min-height:8px;
 }
