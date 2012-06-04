@@ -144,7 +144,7 @@ szfbjQuery.noConflict();
 
 	// Matcher-namespace. Undersøger, om survey'et skal vises på denne side.
 	var matcher = {
-		loc: window.location.toString(),
+		loc: window.location.href.toLowerCase(),
 		check_url: function(url) {
 			//console.log("Checking %s, mode %d", url.s, url.m);
 			switch(url.m) {
