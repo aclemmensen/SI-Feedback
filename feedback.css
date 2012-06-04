@@ -5,6 +5,10 @@
 	z-index:9000;
 }
 
+@media print {
+	#szfb_container { display:none; }
+}
+
 #szfb_tabbar {
 	background:#555;
 	float:right;
@@ -79,6 +83,7 @@
 	font-weight:bold;
 	margin:0px 0 10px 0;
 	font-size:100%;
+	width:auto;
 }
 
 #szfb_comment {
