@@ -564,6 +564,8 @@ szfbjQuery.noConflict();
 
 					// Vis boks
 					elements.container.show();
+
+					reposition();
 				}
 
 				this.destroy = function() {
